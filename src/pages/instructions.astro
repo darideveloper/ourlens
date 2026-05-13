@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthGuard from '../components/molecules/AuthGuard.tsx';
+import InstructionalHome from '../components/organisms/InstructionalHome.astro';
+---
+
+<Layout>
+  <AuthGuard client:load>
+    <InstructionalHome />
+  </AuthGuard>
+</Layout>

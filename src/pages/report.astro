@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthGuard from '../components/molecules/AuthGuard.tsx';
+---
+
+<Layout>
+  <AuthGuard client:load>
+    <div class="min-h-dvh flex flex-col items-center justify-center px-4 text-center">
+      <h1 class="text-3xl font-bold text-on-surface mb-4">Safety Report</h1>
+      <p class="text-lg text-on-surface-muted mb-8">
+        Safety report screen &mdash; Phase 4
+      </p>
+    </div>
+  </AuthGuard>
+</Layout>

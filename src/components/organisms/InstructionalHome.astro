@@ -1,0 +1,94 @@
+---
+import Button from '@/components/atoms/Button.astro';
+import Icon from '@/components/atoms/Icon.astro';
+---
+
+<div class="min-h-dvh px-4 py-8 max-w-lg mx-auto">
+  <h1 class="text-3xl font-bold text-on-surface mb-2">
+    How to scan your home
+  </h1>
+  <p class="text-lg text-on-surface-muted mb-10">
+    Follow these steps to get an AI-powered safety assessment.
+  </p>
+
+  <ol class="space-y-8" role="list">
+    <li class="flex gap-4">
+      <span
+        class="min-h-tap min-w-tap flex items-center justify-center bg-brand-100 text-brand-700 font-bold text-lg rounded-accessible shrink-0"
+        aria-hidden="true"
+      >
+        1
+      </span>
+      <div>
+        <h2 class="text-xl font-semibold text-on-surface mb-2">
+          Find good lighting
+        </h2>
+        <p class="text-base text-on-surface-muted">
+          Turn on room lights and open curtains. The AI needs clear visibility
+          to spot hazards accurately.
+        </p>
+      </div>
+    </li>
+
+    <li class="flex gap-4">
+      <span
+        class="min-h-tap min-w-tap flex items-center justify-center bg-brand-100 text-brand-700 font-bold text-lg rounded-accessible shrink-0"
+        aria-hidden="true"
+      >
+        2
+      </span>
+      <div>
+        <h2 class="text-xl font-semibold text-on-surface mb-2">
+          Hold your phone steady
+        </h2>
+        <p class="text-base text-on-surface-muted">
+          Use both hands and hold the phone at eye level. Move slowly from
+          room to room.
+        </p>
+      </div>
+    </li>
+
+    <li class="flex gap-4">
+      <span
+        class="min-h-tap min-w-tap flex items-center justify-center bg-brand-100 text-brand-700 font-bold text-lg rounded-accessible shrink-0"
+        aria-hidden="true"
+      >
+        3
+      </span>
+      <div>
+        <h2 class="text-xl font-semibold text-on-surface mb-2">
+          Cover every corner
+        </h2>
+        <p class="text-base text-on-surface-muted">
+          Scan floors, stairs, bathrooms, and hallways. Pay extra attention to
+          rugs, cords, and tight spaces.
+        </p>
+      </div>
+    </li>
+
+    <li class="flex gap-4">
+      <span
+        class="min-h-tap min-w-tap flex items-center justify-center bg-brand-100 text-brand-700 font-bold text-lg rounded-accessible shrink-0"
+        aria-hidden="true"
+      >
+        4
+      </span>
+      <div>
+        <h2 class="text-xl font-semibold text-on-surface mb-2">
+          Tap &ldquo;Start Scan&rdquo; when ready
+        </h2>
+        <p class="text-base text-on-surface-muted">
+          The camera will capture frames for 3 seconds. You&rsquo;ll see a
+          progress indicator while the AI analyzes your home.
+        </p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="mt-12 text-center">
+    <Button href="/scanner" variant="primary" size="lg">
+      <Icon name="camera" size="lg" class="mr-2" />
+      Start Scan
+    </Button>
+  </div>
+</div>
