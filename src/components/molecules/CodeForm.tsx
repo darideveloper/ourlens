@@ -15,6 +15,13 @@ export function CodeForm() {
     await validateCodeAction(trimmed);
   };
 
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+    if (error) {
+      useSessionStore.setState({ error: null });
+    }
+  };
+
   if (isValid) {
     navigate('/instructions', { history: 'replace' });
     return null;
@@ -35,7 +42,7 @@ export function CodeForm() {
           inputMode="numeric"
           autoComplete="off"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleInputChange(e.target.value)}
           disabled={isValidating}
           className="h-tap w-full px-4 text-base text-on-surface bg-surface-alt border border-on-surface-muted/30 rounded-accessible focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent contrast-more:border-on-surface disabled:opacity-50"
           placeholder="e.g. 4821"

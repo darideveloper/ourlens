@@ -24,7 +24,15 @@ export const useSessionStore = create<SessionState>()(
           set({ isValidating: true, error: null, code });
           try {
             const result = await validateCode(code);
-            set({ isValid: result.valid, isValidating: false });
+            if (result.valid) {
+              set({ isValid: true, isValidating: false });
+            } else {
+              set({
+                isValid: false,
+                isValidating: false,
+                error: 'That invitation code is not recognised. Please check and try again.',
+              });
+            }
           } catch (err) {
             set({
               error: err instanceof Error ? err.message : 'Unknown error',
