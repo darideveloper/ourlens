@@ -41,3 +41,6 @@ skills-lock.json
 
 # ignore by default all hidden folders (like agents folders)
 .*/
+
+# local scripts
+scripts/

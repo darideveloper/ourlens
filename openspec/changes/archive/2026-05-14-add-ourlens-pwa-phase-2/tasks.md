@@ -1,0 +1,24 @@
+## Phase 2: Access Control, Instructions & API Layer
+
+- [x] 2.1 Create `src/lib/api/client.ts` — typed `safeFetch<T>()` wrapper with `AbortSignal.timeout()`, `FetchError` class, retry logic for transient errors, and environment variable `PUBLIC_N8N_BASE_URL`
+- [x] 2.2 Create `src/lib/api/validate-code.ts` — `validateCode()` function returning dummy `{ valid: true }` during development, typed response with runtime validation
+- [x] 2.3 Create `src/lib/api/analyze-frames.ts` — `submitFrames()` function returning dummy hazard data during development, typed request/response with runtime validation, 45s timeout
+- [x] 2.4 Create `src/lib/api/types.ts` — shared TypeScript types (`ValidateCodeRequest`, `ValidateCodeResponse`, `AnalyzeFramesRequest`, `Hazard`, `RiskLevel`, `SafetyReport`)
+- [x] 2.5 Create `src/lib/api/index.ts` — re-exports all API functions and types
+- [x] 2.6 Create `src/stores/use-session-store.ts` — Zustand store with `skipHydration` and `persist` middleware for invitation code validation state, `devtools` wrapper, async `validateCode` action, `useHydratedSessionStore` hook
+- [x] 2.7 Create `src/stores/use-scan-store.ts` — Zustand store with `skipHydration`, `persist` (with `version`, `migrate`, `partialize`), and `devtools` for current scan data and scan history (capped at 10 entries), `useHydratedScanStore` hook
+- [x] 2.8 Create atom: `src/components/atoms/Button.astro` — accessible, high-contrast button with `min-h-tap min-w-tap`, focus-visible ring, `contrast-more:` variant
+- [x] 2.9 Create atom: `src/components/atoms/Input.astro` — text input with `h-tap`, large font, focus ring, `contrast-more:border-on-surface`
+- [x] 2.10 Create atom: `src/components/atoms/Icon.astro` — SVG icon component (search, camera, arrow-right, check, close, info)
+- [x] 2.11 Create molecule: `src/components/molecules/CodeForm.tsx` — React island invitation code input form with validation feedback, uses `use-session-store`
+- [x] 2.12 Create organism: `src/components/organisms/AccessControl.tsx` — React island composing CodeForm + brand heading
+- [x] 2.13 Wire `src/pages/index.astro` to render AccessControl as `client:load`; on valid code, `navigate('/instructions', { history: 'replace' })`
+- [x] 2.14 Create organism: `src/components/organisms/InstructionalHome.astro` — high-contrast step-by-step instructions with `text-base` (17px minimum)
+- [x] 2.15 Wire `src/pages/instructions.astro` to render InstructionalHome + "Start Scan" CTA linking to `/scanner` (protected by AuthGuard)
+- [x] 2.16 Create atom: `src/components/atoms/IosInstallBanner.tsx` — React island "Add to Home Screen" instruction banner for iOS Safari, persisted dismiss state
+- [x] 2.17 Create atom: `src/components/atoms/OfflineIndicator.tsx` — React island that detects `navigator.onLine` changes and shows an offline banner
+- [x] 2.18 Add IosInstallBanner (`client:idle`) and OfflineIndicator (`client:load`) to Layout.astro
+- [x] 2.19 Build verification: `npm run build` succeeds with all React islands, PWA assets, and page routes; AuthGuard protects `/instructions`, `/scanner`, `/report`
+- [x] 2.20 Create molecule: `src/components/molecules/AuthGuard.tsx` — React island that reads `isValid` from `useHydratedSessionStore`; redirects to `/` via `navigate('/', { history: 'replace' })` if `isValid !== true`; renders children only when authenticated; shows a loading spinner during Zustand persist hydration to prevent flash of protected content
+- [x] 2.21 Wrap protected pages (`instructions.astro`, `scanner.astro`, `report.astro`) with `<AuthGuard client:load>` to block unauthenticated access — users without a valid invitation code are redirected to `/`
+- [x] 2.22 Build verification: `npm run build` succeeds; invalid code shows error message in CodeForm; AuthGuard redirects unauthenticated users to `/`
