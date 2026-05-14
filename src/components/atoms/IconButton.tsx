@@ -19,7 +19,7 @@ export function IconButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="min-h-tap min-w-tap inline-flex items-center justify-center rounded-full bg-surface-alt text-on-surface-muted hover:text-on-surface hover:bg-surface-alt/80 active:scale-95 focus-visible:shadow-focus contrast-more:border-2 contrast-more:border-on-surface disabled:opacity-50 transition-all"
+      className="min-h-tap min-w-tap inline-flex items-center justify-center rounded-full bg-surface-alt text-on-surface-muted hover:text-on-surface hover:bg-surface-alt/80 motion-safe:active:scale-95 focus-visible:shadow-focus contrast-more:border-2 contrast-more:border-on-surface disabled:opacity-50 transition-[transform,background-color,color]"
     >
       {children}
     </button>

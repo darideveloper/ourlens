@@ -9,7 +9,7 @@ export function Spinner({ size = 'base', class: className = '' }: SpinnerProps) 
     <div
       className={`flex items-center justify-center ${className}`}
       role="status"
-      aria-label="Loading"
+      aria-label="Loading…"
     >
       <svg
         className={`animate-spin motion-reduce:animate-none text-brand-500 ${dims}`}

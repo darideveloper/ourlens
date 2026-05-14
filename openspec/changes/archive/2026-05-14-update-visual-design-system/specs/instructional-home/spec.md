@@ -1,8 +1,5 @@
-# instructional-home Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-2. Update Purpose after archive.
-## Requirements
 ### Requirement: Instructional Home Content
 The system SHALL provide an Instructional Home screen at `/instructions` with high-contrast, step-by-step instructions explaining how to scan a home for hazards. Body text SHALL use a minimum of 17px (`text-base` in the project's @theme, which maps to 1.0625rem). The screen SHALL display the Ourlens logo at the top. Each instruction step SHALL animate in with a staggered `slide-up` animation (delay based on `--stagger-index * 80ms`, maximum 300ms per step). Step number badges SHALL use a gradient background derived from brand colors. The "Start Scan" CTA button SHALL use a gradient background and `scale-in` animation.
 
@@ -31,4 +28,3 @@ The Instructional Home screen SHALL use body text at minimum 17px, high-contrast
 - **AND** all text SHALL meet WCAG AAA contrast ratio (7:1 minimum for body text, 4.5:1 for large text)
 - **AND** language SHALL be simple and action-oriented
 - **AND** headings SHALL use `text-wrap: balance`
-

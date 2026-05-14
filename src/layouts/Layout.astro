@@ -4,31 +4,81 @@ import '@/styles/global.css';
 import OfflineIndicator from '@/components/atoms/OfflineIndicator.tsx';
 import IosInstallBanner from '@/components/atoms/IosInstallBanner.tsx';
 import PWAUpdatePrompt from '@/components/atoms/PWAUpdatePrompt.tsx';
+
+const title = 'Ourlens - Home Safety Scanner';
+const path = Astro.url.pathname;
+const showNav = path !== '/' && path !== '/offline';
+
+const pageTitles: Record<string, string> = {
+  '/instructions': 'How to Scan',
+  '/scanner': 'Scanner',
+  '/report': 'Safety Report',
+};
+
+const currentPageTitle = pageTitles[path] || 'Ourlens';
+
+const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
+  ? new URL(import.meta.env.PUBLIC_N8N_BASE_URL).origin
+  : null;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: light;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#fffffe" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Ourlens" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-    <title>Ourlens - Home Safety Scanner</title>
+    {apiOrigin && <link rel="preconnect" href={apiOrigin} />}
+    <title>{title}</title>
   </head>
-  <body class="font-body text-base text-on-surface bg-surface">
+  <body class="font-body text-base text-on-surface bg-surface flex flex-col min-h-dvh" style="touch-action: manipulation;">
     <ClientRouter />
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-brand-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-accessible">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-brand-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-accessible"
+    >
       Skip to content
     </a>
-    <OfflineIndicator client:load />
-    <PWAUpdatePrompt client:load />
-    <IosInstallBanner client:idle />
-    <main id="main-content" transition:animate>
+    <OfflineIndicator client:only="react" />
+    <PWAUpdatePrompt client:only="react" />
+    <IosInstallBanner client:only="react" />
+
+    {showNav && (
+      <nav class="fixed top-0 left-0 right-0 z-30 bg-surface/80 backdrop-blur-md border-b border-on-surface-muted/10">
+        <div class="max-w-lg mx-auto flex items-center h-14 px-4 gap-3">
+          <button
+            type="button"
+            onclick="history.back()"
+            class="min-h-tap min-w-tap flex items-center justify-center -ml-1 text-on-surface-muted hover:text-on-surface focus-visible:shadow-focus rounded-accessible transition-[color]"
+            aria-label="Go back"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M15.4 4.3a1 1 0 0 1 0 1.4L9.1 12l6.3 6.3a1 1 0 0 1-1.4 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 0z" />
+            </svg>
+          </button>
+          <a href="/" class="flex items-center gap-2 no-underline shrink-0 min-h-tap min-w-tap justify-center" aria-label="Ourlens home">
+            <img
+              src="/ourlens-logo.png"
+              alt=""
+              width="28"
+              height="28"
+              class="rounded-full"
+            />
+          </a>
+          <span class="text-base font-semibold text-on-surface truncate">
+            {currentPageTitle}
+          </span>
+        </div>
+      </nav>
+    )}
+
+    <main id="main-content" transition:animate class={showNav ? 'pt-14 relative flex-1 min-h-0' : ''}>
       <slot />
     </main>
   </body>

@@ -7,7 +7,9 @@ export interface Props {
   required?: boolean;
   disabled?: boolean;
   autocomplete?: string;
+  spellcheck?: string;
   class?: string;
+  'aria-label'?: string;
 }
 
 const {
@@ -18,8 +20,12 @@ const {
   required = false,
   disabled = false,
   autocomplete,
+  spellcheck,
   class: className = '',
+  'aria-label': ariaLabel,
 } = Astro.props;
+
+const label = ariaLabel || name;
 
 const classes = `h-tap w-full px-4 text-base text-on-surface bg-surface-alt border border-on-surface-muted/30 rounded-accessible focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent contrast-more:border-on-surface disabled:opacity-50 ${className}`.trim();
 
@@ -34,6 +40,8 @@ if (value) attrs.value = value;
 if (required) attrs.required = true;
 if (disabled) attrs.disabled = true;
 if (autocomplete) attrs.autocomplete = autocomplete;
+if (spellcheck) attrs.spellcheck = spellcheck;
+if (!attrs['aria-label']) attrs['aria-label'] = label;
 ---
 
 <input {...attrs} />

@@ -1,19 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Button from '../components/atoms/Button.astro';
 ---
 
 <Layout>
   <div class="min-h-dvh flex flex-col items-center justify-center px-4 text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="text-on-surface-muted mb-4 mx-auto">
+      <line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="3 3" />
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
     <h1 class="text-3xl font-bold text-on-surface mb-4">You're Offline</h1>
     <p class="text-lg text-on-surface-muted mb-8 max-w-md">
-      It looks like you've lost your internet connection. Please check your connection and try again.
+      It looks like you&rsquo;ve lost your internet connection. Please check your connection and try again.
     </p>
     <button
       type="button"
-      onclick="window.location.reload()"
-      class="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 bg-brand-500 text-white font-semibold rounded-accessible focus-visible:shadow-focus"
+      id="offline-retry-btn"
+      class="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold rounded-accessible hover:from-brand-600 hover:to-brand-700 active:from-brand-700 active:to-brand-800 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background]"
     >
       Try Again
     </button>
   </div>
+  <script>
+    document.getElementById('offline-retry-btn')?.addEventListener('click', () => {
+      window.location.reload();
+    });
+  </script>
 </Layout>

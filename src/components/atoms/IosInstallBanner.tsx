@@ -25,9 +25,16 @@ export default function IosInstallBanner() {
     <div
       role="dialog"
       aria-label="Install app"
-      className="fixed bottom-0 left-0 right-0 z-40 bg-surface-alt border-t border-on-surface-muted/20 px-4 py-4"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-surface/80 backdrop-blur-md border-t border-on-surface-muted/20 px-4 py-4 animate-slide-up"
     >
       <div className="max-w-lg mx-auto flex items-start gap-3">
+        <img
+          src="/ourlens-logo.png"
+          alt=""
+          width="40"
+          height="40"
+          className="rounded-full shrink-0 mt-1"
+        />
         <div className="min-w-0 flex-1">
           <p className="text-base font-semibold text-on-surface mb-1">
             Add Ourlens to your Home Screen

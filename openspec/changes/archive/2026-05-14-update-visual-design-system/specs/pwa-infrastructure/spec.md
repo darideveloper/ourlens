@@ -1,8 +1,5 @@
-# pwa-infrastructure Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change fix-phase2-auth-and-ios-banner. Update Purpose after archive.
-## Requirements
 ### Requirement: iOS Add-to-Home-Screen Prompt
 The application SHALL detect iOS Safari and display a contextual instruction banner explaining how to add the app to the home screen with step-by-step guidance (Share → Add to Home Screen). The banner SHALL include the Ourlens logo icon and SHALL animate in with a `slide-up` effect. The iOS detection function call SHALL use the correct case-sensitive function name `isIOSPwa` matching its definition.
 
@@ -43,29 +40,6 @@ The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin 
 - **AND** SHALL provide maskable icon variants for adaptive icon support
 - **AND** the splash screen and status bar SHALL use the `#fffffe` theme color
 
-### Requirement: Service Worker via @vite-pwa/astro
-The application SHALL use `@vite-pwa/astro` with Workbox for service worker management, cache-first strategy for app shell assets, and network-first strategy with 10s timeout for API calls.
-
-#### Scenario: App accessed on slow network
-- **WHEN** user opens the PWA on a device with weak connectivity
-- **THEN** the app SHALL load the cached UI shell instantly via cache-first strategy
-- **AND** SHALL attempt network-first for API calls with a 10-second timeout fallback to cache
-
-#### Scenario: User is offline
-- **WHEN** user opens the PWA without internet connectivity
-- **THEN** the app SHALL serve the cached UI shell from the service worker cache
-- **AND** SHALL navigate to an offline fallback page for unknown routes
-
-### Requirement: iOS PWA Meta Tags
-The application SHALL include `<meta name="apple-mobile-web-app-capable" content="yes">`, `apple-mobile-web-app-status-bar-style` set to `default`, `apple-mobile-web-app-title`, and `apple-touch-icon` link in the document head.
-
-#### Scenario: PWA meta tags present
-- **WHEN** the Layout component renders
-- **THEN** the HTML head SHALL include `apple-mobile-web-app-capable` meta tag with content `yes`
-- **AND** SHALL include `apple-mobile-web-app-status-bar-style` set to `default` (keeps status bar visible for elderly users)
-- **AND** SHALL include an `apple-touch-icon` link (180x180 minimum)
-- **AND** SHALL include `theme-color` meta tag
-
 ### Requirement: PWA Update Prompt
 The system SHALL detect when a new service worker version is available and display a PWA update prompt with a "Update Now" button, using `useRegisterSW` from `virtual:pwa-register/react`, with `registerType: 'prompt'` so the user controls when to update. The prompt SHALL use glass-morphism styling (`backdrop-blur-md bg-surface/80`) and animate in from the bottom.
 
@@ -76,4 +50,3 @@ The system SHALL detect when a new service worker version is available and displ
 - **AND** the prompt SHALL have `role="alertdialog"` and minimum 44px tap target
 - **AND** the prompt SHALL use glass-morphism styling with `backdrop-blur-md`
 - **AND** the prompt SHALL animate in from the bottom with a `slide-up` effect
-

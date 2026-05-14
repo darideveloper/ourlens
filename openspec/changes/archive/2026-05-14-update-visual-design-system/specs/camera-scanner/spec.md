@@ -1,8 +1,5 @@
-# camera-scanner Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-3. Update Purpose after archive.
-## Requirements
 ### Requirement: Camera Access and Live View
 The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.getUserMedia` with `{ facingMode: { ideal: 'environment' } }` for the rear camera and render a live video preview as a React island component with `client:load` and `transition:persist`. The camera view SHALL include `touch-action: manipulation` on the video element to prevent double-tap zoom delay. A subtle gradient overlay SHALL appear at the bottom of the camera view to improve contrast for the controls.
 
@@ -58,25 +55,3 @@ The Camera Scanner SHALL implement live frame extraction from the camera stream:
 - **WHEN** user attempts to analyze without having recorded or captured anything
 - **THEN** the system SHALL display an error message: "No video captured. Please record a video or take a photo first."
 - **AND** SHALL NOT reference "frames" or "photos" in user-facing messages
-
-### Requirement: Camera Stream Cleanup
-The system SHALL stop all camera tracks and release the media stream when the Camera Scanner component unmounts, when the app goes to the background, and when analysis begins (since the camera stream is no longer needed after frames are captured). The system SHALL restart the camera stream when the user returns from analysis (via "Scan Again" or cancel).
-
-#### Scenario: User navigates away from Scanner
-- **WHEN** user navigates away from the Camera Scanner screen
-- **THEN** the system SHALL call `stop()` on all media stream tracks
-- **AND** SHALL null the `video.srcObject` and call `video.load()` to release resources
-- **AND** the camera indicator light on the device SHALL turn off
-
-#### Scenario: Analysis begins
-- **WHEN** the user submits frames for analysis (taps "Analyze video")
-- **THEN** the system SHALL stop all camera stream tracks immediately after analysis starts
-- **AND** SHALL release the video element
-- **AND** the device camera indicator light SHALL turn off during analysis
-
-#### Scenario: User returns to scanner after analysis
-- **WHEN** the user taps "Scan Again" from the report screen or cancels an in-progress analysis
-- **THEN** the system SHALL set the camera store status to `idle`
-- **AND** the `useCamera` hook SHALL re-acquire the camera stream automatically
-- **AND** the live camera preview SHALL be displayed again
-

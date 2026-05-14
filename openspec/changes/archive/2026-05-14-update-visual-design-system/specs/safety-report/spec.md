@@ -1,8 +1,5 @@
-# safety-report Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-4. Update Purpose after archive.
-## Requirements
 ### Requirement: Safety Report Display
 The system SHALL display a Safety Report page showing the list of hazards identified by the AI, each with a hazard name, risk level badge (Low/High), and actionable recommendation. The report SHALL read scan data from the Zustand scan store using a hydration-safe hook. The report header SHALL display the Ourlens logo. Hazard cards SHALL have shadow styling (`shadow-card hover:shadow-elevated`) and stagger-animate in with `slide-up` effect. Hazard counts SHALL use `tabular-nums` for numeric alignment. The "No Hazards Detected" empty state SHALL include an animated success checkmark with spring effect.
 
@@ -26,21 +23,3 @@ The system SHALL display a Safety Report page showing the list of hazards identi
 - **THEN** the system SHALL show a skeleton loading state matching the report card layout (gray rectangles for heading, text, badges) with `shimmer` animation
 - **AND** SHALL display the full report once hydration completes
 - **AND** skeletons SHALL be disabled when `prefers-reduced-motion: reduce` is active
-
-### Requirement: Scan Again Navigation
-The Safety Report page SHALL provide a "Scan Again" button that navigates the user back to the Camera Scanner page and clears the current scan data.
-
-#### Scenario: User taps Scan Again
-- **WHEN** user taps the "Scan Again" button on the Safety Report
-- **THEN** the system SHALL navigate to `/scanner` via `navigate('/scanner')`
-- **AND** SHALL clear the previous scan data from the current session (not from history)
-
-### Requirement: Scan History Storage
-The system SHALL save completed scan results via Zustand scan store with persist middleware for localStorage-backed history retrieval, capped at a maximum of 10 entries with oldest-first eviction.
-
-#### Scenario: Scan completed
-- **WHEN** a scan completes and the Safety Report is displayed
-- **THEN** the system SHALL save the scan result to the Zustand scan store's `addToHistory` action
-- **AND** the store SHALL persist the data to localStorage automatically via persist middleware with `skipHydration: true`
-- **AND** SHALL maintain a maximum of 10 history entries, removing the oldest when exceeded
-

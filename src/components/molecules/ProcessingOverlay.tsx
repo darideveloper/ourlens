@@ -2,8 +2,8 @@ import { useAnalysisStore } from '@/stores/use-analysis-store';
 import { Spinner } from '@/components/atoms/Spinner';
 
 const STATUS_MESSAGES: Record<string, string> = {
-  uploading: 'Uploading video...',
-  analyzing: 'Analyzing video...',
+  uploading: 'Uploading video…',
+  analyzing: 'Analyzing video…',
 };
 
 interface ProcessingOverlayProps {
@@ -15,14 +15,15 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
 
   if (state === 'idle' || state === 'complete' || state === 'error') return null;
 
-  const statusMessage = STATUS_MESSAGES[state] ?? 'Processing...';
+  const statusMessage = STATUS_MESSAGES[state] ?? 'Processing…';
   const isReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <div
-      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-surface"
+      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-surface/80 backdrop-blur-md"
+      style={{ overscrollBehavior: 'contain' }}
       role="dialog"
       aria-modal="true"
       aria-label="Scanning in progress"
@@ -30,7 +31,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
       <div className="text-center space-y-6 max-w-sm px-4">
         <Spinner size="lg" />
 
-        <div className="space-y-3">
+        <div className="space-y-3" aria-live="polite">
           <p className="text-xl font-semibold text-on-surface">
             {statusMessage}
           </p>
@@ -39,8 +40,8 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
             <div
               className={
                 isReducedMotion
-                  ? 'bg-brand-500 h-3 transition-none'
-                  : 'bg-brand-500 h-3 animate-pulse-slow transition-all duration-150'
+                  ? 'bg-gradient-to-r from-brand-500 to-accent-400 h-3 transition-none'
+                  : 'bg-gradient-to-r from-brand-500 to-accent-400 h-3 animate-pulse-slow transition-[width] duration-150 ease-out'
               }
               style={{ width: `${progress}%` }}
               role="progressbar"
@@ -51,7 +52,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
             />
           </div>
 
-          <p className="text-sm text-on-surface-muted">
+          <p className="text-sm text-on-surface-muted tabular-nums">
             {progress}% complete
           </p>
         </div>
@@ -59,7 +60,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-surface-alt text-on-surface border border-on-surface-muted/30 rounded-accessible hover:bg-surface-active active:bg-surface-alt focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors"
+          className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-surface-alt text-on-surface border border-on-surface-muted/30 rounded-accessible hover:bg-surface-alt/70 active:bg-surface-alt focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background-color]"
         >
           Cancel
         </button>
@@ -76,7 +77,8 @@ interface ErrorOverlayProps {
 export function ErrorOverlay({ message, onRetry }: ErrorOverlayProps) {
   return (
     <div
-      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm px-4"
+      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-surface/80 backdrop-blur-md px-4"
+      style={{ overscrollBehavior: 'contain' }}
       role="alertdialog"
       aria-modal="true"
       aria-label="Analysis error"
@@ -106,13 +108,13 @@ export function ErrorOverlay({ message, onRetry }: ErrorOverlayProps) {
           <h2 className="text-xl font-semibold text-on-surface">
             Analysis Failed
           </h2>
-          <p className="text-base text-on-surface-muted">{message}</p>
+          <p className="text-base text-on-surface-muted" aria-live="assertive">{message}</p>
         </div>
 
         <button
           type="button"
           onClick={onRetry}
-          className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors"
+          className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-gradient-to-r from-brand-500 to-brand-600 text-white rounded-accessible hover:from-brand-600 hover:to-brand-700 active:from-brand-700 active:to-brand-800 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background]"
         >
           Try Again
         </button>

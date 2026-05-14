@@ -13,6 +13,7 @@ export function CameraView({ videoRef }: CameraViewProps) {
       muted
       aria-label="Camera view"
       className="absolute inset-0 w-full h-full object-cover bg-surface-alt"
+      style={{ touchAction: 'manipulation' }}
     />
   );
 }

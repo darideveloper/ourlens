@@ -44,7 +44,9 @@ export function CameraControls({
         label={isRecording ? 'Recording' : 'Record 3-second video'}
       >
         {isRecording ? (
-          <Spinner size="base" />
+          <div className="flex items-center justify-center p-1 rounded-full ring-2 ring-danger-500 animate-pulse-slow">
+            <Spinner size="base" />
+          </div>
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"

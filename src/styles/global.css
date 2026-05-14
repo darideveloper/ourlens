@@ -1,25 +1,77 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme {
   --color-*: initial;
 
-  --color-brand-50: oklch(0.97 0.02 250);
-  --color-brand-100: oklch(0.92 0.04 250);
-  --color-brand-500: oklch(0.60 0.18 250);
-  --color-brand-600: oklch(0.52 0.18 250);
-  --color-brand-700: oklch(0.45 0.16 250);
+  --color-brand-50: oklch(0.97 0.03 20);
+  --color-brand-100: oklch(0.93 0.06 20);
+  --color-brand-200: oklch(0.86 0.10 20);
+  --color-brand-300: oklch(0.76 0.14 20);
+  --color-brand-400: oklch(0.68 0.17 20);
+  --color-brand-500: oklch(0.62 0.18 20);
+  --color-brand-600: oklch(0.54 0.17 20);
+  --color-brand-700: oklch(0.46 0.15 20);
+  --color-brand-800: oklch(0.38 0.12 20);
+  --color-brand-900: oklch(0.28 0.08 20);
 
+  --color-accent-50: oklch(0.97 0.03 78);
+  --color-accent-100: oklch(0.93 0.06 78);
+  --color-accent-200: oklch(0.88 0.10 78);
+  --color-accent-300: oklch(0.83 0.13 78);
+  --color-accent-400: oklch(0.80 0.15 78);
+  --color-accent-500: oklch(0.78 0.16 78);
+  --color-accent-600: oklch(0.70 0.15 78);
+  --color-accent-700: oklch(0.62 0.13 78);
+  --color-accent-800: oklch(0.52 0.10 78);
+  --color-accent-900: oklch(0.40 0.07 78);
+
+  --color-info-50: oklch(0.97 0.01 230);
+  --color-info-100: oklch(0.93 0.02 230);
+  --color-info-200: oklch(0.88 0.03 230);
+  --color-info-300: oklch(0.83 0.04 230);
+  --color-info-400: oklch(0.80 0.045 230);
+  --color-info-500: oklch(0.77 0.05 230);
+  --color-info-600: oklch(0.69 0.04 230);
+  --color-info-700: oklch(0.61 0.035 230);
+  --color-info-800: oklch(0.52 0.03 230);
+  --color-info-900: oklch(0.40 0.02 230);
+
+  --color-danger-50: oklch(0.95 0.06 20);
+  --color-danger-100: oklch(0.90 0.10 20);
+  --color-danger-200: oklch(0.82 0.14 20);
+  --color-danger-300: oklch(0.72 0.18 20);
+  --color-danger-400: oklch(0.63 0.21 20);
   --color-danger-500: oklch(0.55 0.24 25);
-  --color-danger-700: oklch(0.45 0.20 25);
-  --color-safe-500: oklch(0.55 0.17 145);
-  --color-safe-700: oklch(0.45 0.14 145);
+  --color-danger-600: oklch(0.48 0.21 25);
+  --color-danger-700: oklch(0.42 0.18 25);
+  --color-danger-800: oklch(0.35 0.14 25);
+  --color-danger-900: oklch(0.26 0.10 25);
 
-  --color-surface: oklch(1 0 0);
+  --color-warning-50: oklch(0.97 0.03 78);
+  --color-warning-100: oklch(0.93 0.06 78);
+  --color-warning-200: oklch(0.88 0.10 78);
+  --color-warning-300: oklch(0.83 0.13 78);
+  --color-warning-400: oklch(0.80 0.15 78);
+  --color-warning-500: oklch(0.78 0.16 78);
+  --color-warning-600: oklch(0.70 0.15 78);
+  --color-warning-700: oklch(0.62 0.13 78);
+
+  --color-safe-50: oklch(0.95 0.03 145);
+  --color-safe-100: oklch(0.90 0.06 145);
+  --color-safe-200: oklch(0.82 0.10 145);
+  --color-safe-300: oklch(0.72 0.14 145);
+  --color-safe-400: oklch(0.63 0.16 145);
+  --color-safe-500: oklch(0.55 0.17 145);
+  --color-safe-600: oklch(0.48 0.15 145);
+  --color-safe-700: oklch(0.42 0.13 145);
+  --color-safe-800: oklch(0.35 0.10 145);
+  --color-safe-900: oklch(0.26 0.07 145);
+
+  --color-surface: #fffffe;
   --color-surface-alt: oklch(0.97 0.005 260);
+  --color-surface-active: oklch(0.93 0.005 260);
   --color-on-surface: oklch(0.15 0.01 260);
-  --color-on-surface-muted: oklch(0.40 0.01 260);
+  --color-on-surface-muted: oklch(0.45 0.01 260);
 
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --text-base: 1.0625rem;
@@ -37,10 +89,18 @@
 
   --radius-accessible: 0.5rem;
 
-  --shadow-focus: 0 0 0 3px oklch(0.60 0.18 250 / 0.4);
+  --shadow-focus: 0 0 0 3px oklch(0.62 0.18 20 / 0.4);
+  --shadow-card: 0 1px 3px 0 oklch(0 0 0 / 0.08), 0 1px 2px -1px oklch(0 0 0 / 0.06);
+  --shadow-elevated: 0 4px 6px -1px oklch(0 0 0 / 0.10), 0 2px 4px -2px oklch(0 0 0 / 0.06);
+  --shadow-modal: 0 10px 15px -3px oklch(0 0 0 / 0.10), 0 4px 6px -4px oklch(0 0 0 / 0.05);
 
   --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
   --animate-flash: flash 300ms ease-out forwards;
+  --animate-fade-in: fade-in 300ms ease-out forwards;
+  --animate-slide-up: slide-up 300ms ease-out forwards;
+  --animate-scale-in: scale-in 250ms ease-out forwards;
+  --animate-stagger-fade: stagger-fade 400ms ease-out forwards;
+  --animate-shimmer: shimmer 1.5s ease-in-out infinite;
 
   @keyframes pulse-slow {
     0%, 100% { opacity: 1; }
@@ -51,9 +111,66 @@
     0% { opacity: 1; }
     100% { opacity: 0; }
   }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes stagger-fade {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    oklch(0.93 0.005 260) 25%,
+    oklch(0.97 0.005 260) 50%,
+    oklch(0.93 0.005 260) 75%
+  );
+  background-size: 200% 100%;
+}
+
+@utility heading-anchor {
+  scroll-margin-top: 5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+  }
+
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {

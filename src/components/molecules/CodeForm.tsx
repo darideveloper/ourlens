@@ -41,11 +41,12 @@ export function CodeForm() {
           type="text"
           inputMode="numeric"
           autoComplete="off"
+          spellCheck={false}
           value={inputValue}
           onChange={(e) => handleInputChange(e.target.value)}
           disabled={isValidating}
           className="h-tap w-full px-4 text-base text-on-surface bg-surface-alt border border-on-surface-muted/30 rounded-accessible focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent contrast-more:border-on-surface disabled:opacity-50"
-          placeholder="e.g. 4821"
+          placeholder="e.g. 4821…"
           aria-describedby={error ? 'code-error' : undefined}
         />
       </div>
@@ -59,12 +60,12 @@ export function CodeForm() {
       <button
         type="submit"
         disabled={isValidating || !inputValue.trim()}
-        className="min-h-tap min-w-tap w-full inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 disabled:opacity-50 transition-colors"
+        className="min-h-tap min-w-tap w-full inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-gradient-to-r from-brand-500 to-brand-600 text-white rounded-accessible hover:from-brand-600 hover:to-brand-700 active:from-brand-700 active:to-brand-800 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 disabled:opacity-50 transition-[background]"
       >
         {isValidating ? (
           <Spinner size="base" />
         ) : (
-          'Continue'
+          'Verify Code'
         )}
       </button>
     </form>

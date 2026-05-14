@@ -6,8 +6,6 @@ import { CameraScanner } from '../components/organisms/CameraScanner.tsx';
 
 <Layout>
   <AuthGuard client:load>
-    <div class="relative min-h-dvh">
-      <CameraScanner client:load transition:persist="scanner" />
-    </div>
+    <CameraScanner client:only="react" transition:persist="scanner" />
   </AuthGuard>
 </Layout>

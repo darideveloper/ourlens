@@ -34,12 +34,14 @@ export function CameraScanner() {
   const isAnalyzing = analysisState !== 'idle' && analysisState !== 'complete';
 
   return (
-    <div className="absolute inset-0 bg-surface-alt">
+    <div className="relative h-full bg-surface-alt">
       <div className={status === 'ready' || status === 'recording' || status === 'capturing' ? '' : 'hidden'}>
         <CameraView videoRef={videoRef} />
+
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface-alt/90 to-transparent pointer-events-none z-[5]" />
       </div>
 
-      <canvas ref={canvasRef} className="hidden" aria-hidden="true" />
+      <canvas ref={canvasRef} width="1024" height="768" className="hidden" aria-hidden="true" />
 
       {status === 'ready' || status === 'capturing' || status === 'recording' ? (
         <CameraControls
@@ -55,7 +57,7 @@ export function CameraScanner() {
           <button
             type="button"
             onClick={() => { stopStream(); analyze(); }}
-            className="min-h-tap min-w-tap w-full max-w-xs inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors shadow-lg"
+            className="min-h-tap min-w-tap w-full max-w-xs inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-gradient-to-r from-brand-500 to-accent-500 text-white rounded-accessible hover:from-brand-600 hover:to-accent-600 active:from-brand-700 active:to-accent-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background] shadow-lg"
           >
             Analyze video
           </button>
@@ -68,7 +70,7 @@ export function CameraScanner() {
       )}
 
       {status === 'recording' && (
-        <div className="absolute top-4 left-0 right-0 flex justify-center z-10 pointer-events-none">
+        <div className="absolute top-16 left-0 right-0 flex justify-center z-10 pointer-events-none">
           <div className="bg-danger-500 text-white text-lg font-semibold px-4 py-2 rounded-accessible animate-pulse-slow" aria-hidden="true">
             Recording
           </div>
@@ -76,23 +78,23 @@ export function CameraScanner() {
       )}
 
       {status === 'capturing' && (
-        <div className="absolute inset-0 bg-white/80 z-20 pointer-events-none animate-flash" />
+        <div className="absolute inset-0 bg-surface/80 z-20 pointer-events-none animate-flash" />
       )}
 
       {status === 'idle' || status === 'starting' ? (
-        <div className="min-h-dvh flex items-center justify-center">
+        <div className="h-full flex items-center justify-center">
           <div className="text-center space-y-4">
             <Spinner size="lg" />
             <p className="text-base text-on-surface-muted">
-              Starting camera...
+              Starting camera…
             </p>
           </div>
         </div>
       ) : null}
 
       {status === 'error' && error ? (
-        <div className="min-h-dvh flex items-center justify-center px-4">
-          <div className="max-w-sm text-center space-y-6">
+        <div className="h-full flex items-center justify-center px-4" aria-live="assertive">
+          <div className="max-w-sm text-center space-y-6" style={{ overscrollBehavior: 'contain' }}>
             <div className="text-danger-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +129,7 @@ export function CameraScanner() {
               onClick={() => {
                 reset();
               }}
-              className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors"
+              className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-gradient-to-r from-brand-500 to-brand-600 text-white rounded-accessible hover:from-brand-600 hover:to-brand-700 active:from-brand-700 active:to-brand-800 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background]"
             >
               Try Again
             </button>
