@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 import OfflineIndicator from '@/components/atoms/OfflineIndicator.tsx';
 import IosInstallBanner from '@/components/atoms/IosInstallBanner.tsx';
+import PWAUpdatePrompt from '@/components/atoms/PWAUpdatePrompt.tsx';
 ---
 
 <!doctype html>
@@ -25,8 +26,9 @@ import IosInstallBanner from '@/components/atoms/IosInstallBanner.tsx';
       Skip to content
     </a>
     <OfflineIndicator client:load />
+    <PWAUpdatePrompt client:load />
     <IosInstallBanner client:idle />
-    <main id="main-content">
+    <main id="main-content" transition:animate>
       <slot />
     </main>
   </body>

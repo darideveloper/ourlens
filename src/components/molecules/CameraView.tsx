@@ -11,6 +11,7 @@ export function CameraView({ videoRef }: CameraViewProps) {
       autoPlay
       playsInline
       muted
+      aria-label="Camera view"
       className="absolute inset-0 w-full h-full object-cover bg-surface-alt"
     />
   );

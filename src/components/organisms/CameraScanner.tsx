@@ -69,7 +69,7 @@ export function CameraScanner() {
 
       {status === 'recording' && (
         <div className="absolute top-4 left-0 right-0 flex justify-center z-10 pointer-events-none">
-          <div className="bg-danger-500 text-white text-lg font-semibold px-4 py-2 rounded-accessible animate-pulse-slow">
+          <div className="bg-danger-500 text-white text-lg font-semibold px-4 py-2 rounded-accessible animate-pulse-slow" aria-hidden="true">
             Recording
           </div>
         </div>
