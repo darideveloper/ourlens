@@ -4,7 +4,7 @@
 TBD - created by archiving change add-ourlens-pwa-phase-3. Update Purpose after archive.
 ## Requirements
 ### Requirement: Camera Access and Live View
-The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.getUserMedia` with `{ facingMode: { ideal: 'environment' } }` for the rear camera and render a live video preview as a React island component with `client:load` and `transition:persist`. The camera view SHALL include `touch-action: manipulation` on the video element to prevent double-tap zoom delay. A subtle gradient overlay SHALL appear at the bottom of the camera view to improve contrast for the controls.
+The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.getUserMedia` with `{ facingMode: { ideal: 'environment' } }` for the rear camera and render a live video preview as a React island component with `client:load` and `transition:persist`. The camera view SHALL include `touch-action: manipulation` on the video element to prevent double-tap zoom delay. A subtle gradient overlay SHALL appear at the bottom of the camera view to improve contrast for the controls. The layout hierarchy from `<body>` through `<main>` to the camera component SHALL use flex layout at every level (not percentage-based height) to ensure height propagation works through Astro's `display: contents` island wrappers. The `<main>` element, the AuthGuard wrapper, and the CameraScanner outer div SHALL all be `flex flex-col` containers. Inner status divs (loading, error) SHALL use `flex-1 min-h-0` instead of `h-full` to fill the flex container.
 
 #### Scenario: Camera permission granted
 - **WHEN** user navigates to the Scanner screen and grants camera permission
@@ -32,6 +32,14 @@ The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.ge
 - **WHEN** the app returns from the background on iOS Safari
 - **THEN** the system SHALL check if camera tracks are still `live` via `visibilitychange` event
 - **AND** SHALL restart the camera if tracks are dead
+
+#### Scenario: Camera preview fills available viewport height
+- **WHEN** the camera stream starts successfully on a page with the top navigation bar
+- **THEN** the `<main>` element SHALL be a flex column container allowing its children to stretch to fill the viewport
+- **AND** the AuthGuard wrapper SHALL be a flex column container (`flex-1 min-h-0 flex flex-col`) so height propagates through Astro's `display: contents` island wrappers
+- **AND** the CameraScanner outer div SHALL use `flex-1 min-h-0` (not `h-full`) to participate in the flex column
+- **AND** the `<video>` element SHALL have non-zero rendered dimensions (bounding box height > 0)
+- **AND** the live camera preview SHALL be visible and fill the available space
 
 ### Requirement: Snapshot Frame Extraction
 The Camera Scanner SHALL implement live frame extraction from the camera stream: during a 3-second recording, extract frames every 0.75 seconds using `canvas.drawImage(video)` and `requestAnimationFrame`, resize to 1024px width maintaining aspect ratio, compress to JPEG at 0.7 quality, and convert to Base64 strings. The user SHALL NOT see references to internal frame extraction; all user-facing labels SHALL present the flow as "record video → analyze video". After recording or capture completes and frames exist, the system SHALL show an "Analyze video" button with a gradient background (`bg-gradient-to-r from-brand-500 to-accent-500`) at the bottom of the screen (above the camera controls), only when the camera status is `ready`. The button SHALL NOT appear during active recording or capturing states. The "Recording" indicator SHALL use a glow-pulse animation (`animate-pulse-slow` with `ring-2 ring-danger-500`).

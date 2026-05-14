@@ -4,7 +4,7 @@ import { useHydratedSessionStore } from '@/stores/use-session-store';
 
 function Skeleton() {
   return (
-    <div className="flex-1 min-h-0 flex items-center justify-center px-4">
+    <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="flex justify-center">
           <div className="w-16 h-16 shimmer-bg rounded-full" />
@@ -36,5 +36,5 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return <Skeleton />;
   }
 
-  return <div className="flex-1 min-h-0">{children}</div>;
+  return <div className="flex-1 min-h-0 flex flex-col">{children}</div>;
 }

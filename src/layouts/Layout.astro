@@ -80,7 +80,7 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
       </nav>
     )}
 
-    <main id="main-content" transition:animate class={showNav ? 'pt-14 relative flex-1 min-h-0' : ''}>
+    <main id="main-content" transition:animate class={showNav ? 'pt-14 relative flex-1 min-h-0 flex flex-col' : ''}>
       <slot />
     </main>
   </body>

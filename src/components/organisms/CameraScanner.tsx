@@ -34,7 +34,7 @@ export function CameraScanner() {
   const isAnalyzing = analysisState !== 'idle' && analysisState !== 'complete';
 
   return (
-    <div className="relative h-full bg-surface-alt">
+    <div className="relative flex flex-col flex-1 min-h-0 bg-surface-alt">
       <div className={status === 'ready' || status === 'recording' || status === 'capturing' ? '' : 'hidden'}>
         <CameraView videoRef={videoRef} />
 
@@ -82,7 +82,7 @@ export function CameraScanner() {
       )}
 
       {status === 'idle' || status === 'starting' ? (
-        <div className="h-full flex items-center justify-center">
+        <div className="flex-1 min-h-0 flex items-center justify-center">
           <div className="text-center space-y-4">
             <Spinner size="lg" />
             <p className="text-base text-on-surface-muted">
@@ -93,7 +93,7 @@ export function CameraScanner() {
       ) : null}
 
       {status === 'error' && error ? (
-        <div className="h-full flex items-center justify-center px-4" aria-live="assertive">
+        <div className="flex-1 min-h-0 flex items-center justify-center px-4" aria-live="assertive">
           <div className="max-w-sm text-center space-y-6" style={{ overscrollBehavior: 'contain' }}>
             <div className="text-danger-500">
               <svg

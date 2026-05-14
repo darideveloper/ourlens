@@ -21,5 +21,12 @@ test.describe('Task 3.12 - Camera Scanner UI', () => {
     );
 
     await expect(page.locator('video, button[aria-label="Try Again"], p:has-text("Starting camera")').first()).toBeAttached({ timeout: 10_000 });
+
+    // Check that if the video element is visible, it has non-zero rendered dimensions
+    // (regression guard against camera height collapse — the container must fill the viewport)
+    const videoBox = await page.locator('video').boundingBox();
+    if (videoBox) {
+      expect(videoBox.height).toBeGreaterThan(0);
+    }
   });
 });
