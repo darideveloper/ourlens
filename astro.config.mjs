@@ -41,6 +41,9 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    allowedHosts: ['ourlens.darideveloper.com'],
+  },
   vite: {
     plugins: [tailwindcss()],
   },

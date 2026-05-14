@@ -44,3 +44,6 @@ skills-lock.json
 
 # local scripts
 scripts/
+
+# local TLS certificates
+.certs/

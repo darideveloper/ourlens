@@ -1,15 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import AuthGuard from '../components/molecules/AuthGuard.tsx';
+import { CameraScanner } from '../components/organisms/CameraScanner.tsx';
 ---
 
 <Layout>
   <AuthGuard client:load>
-    <div class="min-h-dvh flex flex-col items-center justify-center px-4 text-center">
-      <h1 class="text-3xl font-bold text-on-surface mb-4">Camera Scanner</h1>
-      <p class="text-lg text-on-surface-muted mb-8">
-        Camera scanner screen &mdash; Phase 3
-      </p>
+    <div class="relative min-h-dvh">
+      <CameraScanner client:load transition:persist="scanner" />
     </div>
   </AuthGuard>
 </Layout>

@@ -33,7 +33,9 @@ test.describe('Task 2.3 & 2.4 - AuthGuard redirects unauthenticated users', () =
       await page.goto(route);
 
       await expect(page).toHaveURL('/', { timeout: 10_000 });
-      await expect(page.locator('h1')).toContainText('Welcome to Ourlens');
+      await expect(
+        page.getByRole('heading', { name: 'Welcome to Ourlens' }),
+      ).toBeVisible();
     });
   }
 });
@@ -52,6 +54,8 @@ test.describe('Task 2.5 - Authenticated user accesses protected content', () => 
     await page.click('button[type="submit"]');
 
     await expect(page).toHaveURL('/instructions', { timeout: 10_000 });
-    await expect(page.locator('h1')).toContainText('How to scan your home');
+    await expect(
+      page.getByRole('heading', { name: 'How to scan your home' }),
+    ).toBeVisible();
   });
 });
