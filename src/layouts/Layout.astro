@@ -6,7 +6,7 @@ import IosInstallBanner from '@/components/atoms/IosInstallBanner.tsx';
 import PWAUpdatePrompt from '@/components/atoms/PWAUpdatePrompt.tsx';
 
 const title = 'Ourlens - Home Safety Scanner';
-const path = Astro.url.pathname;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const showNav = path !== '/' && path !== '/offline';
 
 const pageTitles: Record<string, string> = {
@@ -16,6 +16,7 @@ const pageTitles: Record<string, string> = {
 };
 
 const currentPageTitle = pageTitles[path] || 'Ourlens';
+const backDisabled = path === '/instructions';
 
 const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
   ? new URL(import.meta.env.PUBLIC_N8N_BASE_URL).origin
@@ -54,8 +55,9 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
         <div class="max-w-lg mx-auto flex items-center h-14 px-4 gap-3">
           <button
             type="button"
-            onclick="history.back()"
-            class="min-h-tap min-w-tap flex items-center justify-center -ml-1 text-on-surface-muted hover:text-on-surface focus-visible:shadow-focus rounded-accessible transition-[color]"
+            disabled={backDisabled}
+            onclick={backDisabled ? undefined : "history.back()"}
+            class={"min-h-tap min-w-tap flex items-center justify-center -ml-1 text-on-surface-muted " + (backDisabled ? 'opacity-30 cursor-default' : 'hover:text-on-surface') + " focus-visible:shadow-focus rounded-accessible transition-[color]"}
             aria-label="Go back"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

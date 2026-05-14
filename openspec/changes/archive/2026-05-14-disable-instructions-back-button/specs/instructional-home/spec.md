@@ -1,8 +1,7 @@
-# instructional-home Specification
+# Spec Delta: instructional-home
 
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-2. Update Purpose after archive.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Instructional Home Content
 
 The system SHALL provide an Instructional Home screen at `/instructions` with high-contrast, step-by-step instructions explaining how to scan a home for hazards. Body text SHALL use a minimum of 17px (`text-base` in the project's @theme, which maps to 1.0625rem). The screen SHALL display the Ourlens logo at the top. Each instruction step SHALL animate in with a staggered `slide-up` animation (delay based on `--stagger-index * 80ms`, maximum 300ms per step). Step number badges SHALL use a gradient background derived from brand colors. The "Start Scan" CTA button SHALL use a gradient background and `scale-in` animation. The top navigation back button SHALL be disabled on this screen because there is no previous authenticated screen to navigate back to. The back button SHALL use the HTML `disabled` attribute, which prevents clicks, removes the button from the tab order, and communicates the disabled state to assistive technology natively. The disabled button SHALL display with `opacity-30` and `cursor-default` styling to visually indicate it is not interactive.
@@ -33,14 +32,3 @@ The system SHALL provide an Instructional Home screen at `/instructions` with hi
 - **AND** the back button SHALL display with `opacity-30` and `cursor-default` styling to visually indicate it is not interactive
 - **AND** the back button SHALL NOT respond to hover (`hover:text-on-surface` shall be removed when disabled)
 - **AND** the back button SHALL NOT navigate anywhere when activated
-
-### Requirement: Accessibility of Instructions
-The Instructional Home screen SHALL use body text at minimum 17px, high-contrast colors (WCAG AAA: 7:1 minimum for body text), and simple language appropriate for elderly users. Headings SHALL use `text-wrap: balance`.
-
-#### Scenario: Text legibility on Instructional Home
-- **WHEN** the Instructional Home screen is rendered
-- **THEN** body text SHALL be at least 17px (`text-base`)
-- **AND** all text SHALL meet WCAG AAA contrast ratio (7:1 minimum for body text, 4.5:1 for large text)
-- **AND** language SHALL be simple and action-oriented
-- **AND** headings SHALL use `text-wrap: balance`
-
