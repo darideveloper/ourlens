@@ -58,6 +58,14 @@ export function useCamera(videoRef: React.RefObject<HTMLVideoElement | null>) {
     }
   }, [videoRef, setStatus, setError]);
 
+  const stopStream = useCallback(() => {
+    stopStreamTracks(streamRef.current);
+    releaseVideoElement(videoRef.current);
+    streamRef.current = null;
+    startRequestedRef.current = false;
+    abortedRef.current = true;
+  }, [videoRef]);
+
   useEffect(() => {
     if (status === 'idle' && !startRequestedRef.current) {
       startCamera();
@@ -91,5 +99,5 @@ export function useCamera(videoRef: React.RefObject<HTMLVideoElement | null>) {
     };
   }, [videoRef, startCamera]);
 
-  return streamRef;
+  return { stopStream };
 }

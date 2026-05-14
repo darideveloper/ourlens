@@ -35,7 +35,7 @@ export function useAnalysis() {
   const analyze = useCallback(async () => {
     if (useAnalysisStore.getState().state !== 'idle') return;
     if (frames.length === 0) {
-      setError('No frames captured. Please capture some photos first.');
+      setError('No video captured. Please record a video or take a photo first.');
       return;
     }
 
@@ -78,6 +78,7 @@ export function useAnalysis() {
   const cancel = useCallback(() => {
     stopSimulation();
     reset();
+    useCameraStore.getState().setStatus('idle');
   }, [stopSimulation, reset]);
 
   return { analyze, cancel };

@@ -2,8 +2,8 @@ import { useAnalysisStore } from '@/stores/use-analysis-store';
 import { Spinner } from '@/components/atoms/Spinner';
 
 const STATUS_MESSAGES: Record<string, string> = {
-  uploading: 'Sending photos...',
-  analyzing: 'Analyzing your home...',
+  uploading: 'Uploading video...',
+  analyzing: 'Analyzing video...',
 };
 
 interface ProcessingOverlayProps {
@@ -22,7 +22,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
 
   return (
     <div
-      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm"
+      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-surface"
       role="dialog"
       aria-modal="true"
       aria-label="Scanning in progress"
@@ -55,10 +55,6 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
             {progress}% complete
           </p>
         </div>
-
-        <p className="text-sm text-on-surface-muted">
-          This may take a moment. Your camera stays active during analysis.
-        </p>
 
         <button
           type="button"

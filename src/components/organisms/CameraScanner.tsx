@@ -14,7 +14,7 @@ export function CameraScanner() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useCamera(videoRef);
+  const { stopStream } = useCamera(videoRef);
   const { captureFrame, startRecording, isRecording, frames } = useFrameExtractor(
     videoRef,
     canvasRef,
@@ -27,6 +27,7 @@ export function CameraScanner() {
 
   const handleRetry = () => {
     cancel();
+    stopStream();
     analyze();
   };
 
@@ -49,14 +50,14 @@ export function CameraScanner() {
         />
       ) : null}
 
-      {frames.length > 0 && !isAnalyzing && (
-        <div className="absolute bottom-24 left-0 right-0 flex justify-center z-10">
+      {status === 'ready' && frames.length > 0 && !isAnalyzing && (
+        <div className="absolute bottom-24 left-0 right-0 flex justify-center z-10 px-4">
           <button
             type="button"
-            onClick={analyze}
-            className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors"
+            onClick={() => { stopStream(); analyze(); }}
+            className="min-h-tap min-w-tap w-full max-w-xs inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors shadow-lg"
           >
-            Analyze ({frames.length} {frames.length === 1 ? 'photo' : 'photos'})
+            Analyze video
           </button>
         </div>
       )}

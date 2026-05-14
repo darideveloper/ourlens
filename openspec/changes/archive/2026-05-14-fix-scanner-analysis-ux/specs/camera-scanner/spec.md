@@ -1,36 +1,4 @@
-# camera-scanner Specification
-
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-3. Update Purpose after archive.
-## Requirements
-### Requirement: Camera Access and Live View
-The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.getUserMedia` with `{ facingMode: { ideal: 'environment' } }` for the rear camera and render a live video preview as a React island component with `client:load` and `transition:persist`.
-
-#### Scenario: Camera permission granted
-- **WHEN** user navigates to the Scanner screen and grants camera permission
-- **THEN** the system SHALL display a live camera preview filling the viewport
-- **AND** SHALL show Capture (photo) and Record (3-second video) controls
-- **AND** SHALL start the rear-facing camera with `facingMode: { ideal: 'environment' }`
-
-#### Scenario: Camera permission denied
-- **WHEN** user denies camera permission
-- **THEN** the system SHALL display a user-friendly error message explaining how to enable camera access
-- **AND** SHALL provide a "Try Again" button
-- **AND** SHALL NOT crash or show a blank screen
-
-#### Scenario: Camera permission timeout
-- **WHEN** `getUserMedia` does not respond within 10 seconds
-- **THEN** the system SHALL display a "Camera did not respond" error message with a retry button
-- **AND** SHALL abort the camera request via `AbortSignal.timeout`
-
-#### Scenario: Overconstrained camera fallback
-- **WHEN** the requested rear camera constraints are not available on the device
-- **THEN** the system SHALL fall back to `{ video: true, audio: false }` and use any available camera
-
-#### Scenario: iOS Safari stream recovery
-- **WHEN** the app returns from the background on iOS Safari
-- **THEN** the system SHALL check if camera tracks are still `live` via `visibilitychange` event
-- **AND** SHALL restart the camera if tracks are dead
+## MODIFIED Requirements
 
 ### Requirement: Snapshot Frame Extraction
 The Camera Scanner SHALL implement live frame extraction from the camera stream: during a 3-second recording, extract frames every 0.75 seconds using `canvas.drawImage(video)` and `requestAnimationFrame`, resize to 1024px width maintaining aspect ratio, compress to JPEG at 0.7 quality, and convert to Base64 strings. The user SHALL NOT see references to internal frame extraction; all user-facing labels SHALL present the flow as "record video → analyze video". After recording or capture completes and frames exist, the system SHALL show an "Analyze video" button at the bottom of the screen (above the camera controls), only when the camera status is `ready`. The button SHALL NOT appear during active recording or capturing states.
@@ -77,4 +45,3 @@ The system SHALL stop all camera tracks and release the media stream when the Ca
 - **THEN** the system SHALL set the camera store status to `idle`
 - **AND** the `useCamera` hook SHALL re-acquire the camera stream automatically
 - **AND** the live camera preview SHALL be displayed again
-
