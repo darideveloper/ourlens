@@ -42,7 +42,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    allowedHosts: ['ourlens.darideveloper.com'],
+    allowedHosts: process.env.ALLOWED_HOSTS?.split(',').map(s => s.trim()) || ['ourlens.darideveloper.com'],
   },
   vite: {
     plugins: [tailwindcss()],
