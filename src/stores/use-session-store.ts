@@ -58,10 +58,18 @@ export function useHydratedSessionStore() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     useSessionStore.persist.rehydrate();
-    const unsub = useSessionStore.persist.onFinishHydration(() =>
-      setHydrated(true),
-    );
-    if (useSessionStore.persist.hasHydrated()) setHydrated(true);
+    const unsub = useSessionStore.persist.onFinishHydration(() => {
+      if (useSessionStore.getState().isValid === null) {
+        useSessionStore.setState({ isValid: false });
+      }
+      setHydrated(true);
+    });
+    if (useSessionStore.persist.hasHydrated()) {
+      if (useSessionStore.getState().isValid === null) {
+        useSessionStore.setState({ isValid: false });
+      }
+      setHydrated(true);
+    }
     return unsub;
   }, []);
   const store = useSessionStore();

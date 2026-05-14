@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
@@ -22,6 +23,7 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "playwright": "^1.60.0"
   }
 }

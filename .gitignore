@@ -32,5 +32,12 @@ openspec/changes/*
 # skip docs
 docs/
 
+# playwright
+playwright-report/
+test-results/
+
+# agent skill system
+skills-lock.json
+
 # ignore by default all hidden folders (like agents folders)
 .*/

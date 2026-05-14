@@ -14,7 +14,7 @@ export default function IosInstallBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!isiOSPwa()) return;
+    if (!isIOSPwa()) return;
     if (localStorage.getItem(DISMISS_KEY) === 'true') return;
     setVisible(true);
   }, []);
