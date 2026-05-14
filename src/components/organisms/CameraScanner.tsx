@@ -1,10 +1,13 @@
 import { useRef } from 'react';
 import { useCamera } from '@/hooks/useCamera';
 import { useFrameExtractor } from '@/hooks/useFrameExtractor';
+import { useAnalysis } from '@/hooks/useAnalysis';
 import { useCameraStore } from '@/stores/use-camera-store';
+import { useAnalysisStore } from '@/stores/use-analysis-store';
 import { isInsecureContext } from '@/lib/camera';
 import { CameraView } from '@/components/molecules/CameraView';
 import { CameraControls } from '@/components/molecules/CameraControls';
+import { ProcessingOverlay, ErrorOverlay } from '@/components/molecules/ProcessingOverlay';
 import { Spinner } from '@/components/atoms/Spinner';
 
 export function CameraScanner() {
@@ -12,12 +15,22 @@ export function CameraScanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useCamera(videoRef);
-  const { captureFrame, startRecording, isRecording } = useFrameExtractor(
+  const { captureFrame, startRecording, isRecording, frames } = useFrameExtractor(
     videoRef,
     canvasRef,
   );
   const { status, error, reset } = useCameraStore();
+  const analysisState = useAnalysisStore((s) => s.state);
+  const analysisError = useAnalysisStore((s) => s.error);
+  const { analyze, cancel } = useAnalysis();
   const insecure = isInsecureContext();
+
+  const handleRetry = () => {
+    cancel();
+    analyze();
+  };
+
+  const isAnalyzing = analysisState !== 'idle' && analysisState !== 'complete';
 
   return (
     <div className="absolute inset-0 bg-surface-alt">
@@ -35,6 +48,23 @@ export function CameraScanner() {
           disabled={status !== 'ready'}
         />
       ) : null}
+
+      {frames.length > 0 && !isAnalyzing && (
+        <div className="absolute bottom-24 left-0 right-0 flex justify-center z-10">
+          <button
+            type="button"
+            onClick={analyze}
+            className="min-h-tap min-w-tap inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-brand-500 text-white rounded-accessible hover:bg-brand-600 active:bg-brand-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-colors"
+          >
+            Analyze ({frames.length} {frames.length === 1 ? 'photo' : 'photos'})
+          </button>
+        </div>
+      )}
+
+      {isAnalyzing && <ProcessingOverlay onCancel={cancel} />}
+      {analysisState === 'error' && analysisError && (
+        <ErrorOverlay message={analysisError} onRetry={handleRetry} />
+      )}
 
       {status === 'recording' && (
         <div className="absolute top-4 left-0 right-0 flex justify-center z-10 pointer-events-none">

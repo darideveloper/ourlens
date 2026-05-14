@@ -55,3 +55,15 @@ All components SHALL enhance visibility when the OS high-contrast setting is act
 - **AND** muted text SHALL gain full contrast (`contrast-more:text-on-surface`)
 - **AND** all focus indicators SHALL remain visible
 
+### Requirement: Reduced Motion Support
+All animations and transitions SHALL respect the `prefers-reduced-motion` media query. When reduced motion is preferred, animations SHALL be replaced with static alternatives using `motion-reduce:` Tailwind variants.
+
+#### Scenario: Processing overlay animation with reduced motion
+- **WHEN** the user has `prefers-reduced-motion: reduce` enabled
+- **THEN** the processing overlay progress animation SHALL be static (`motion-reduce:animate-none`)
+- **AND** page transitions SHALL use `transition:animate="none"` at root level
+
+#### Scenario: Processing overlay animation without reduced motion
+- **WHEN** the user does not have `prefers-reduced-motion: reduce` enabled
+- **THEN** the processing overlay SHALL show a slow pulse animation (`animate-pulse-slow`)
+
