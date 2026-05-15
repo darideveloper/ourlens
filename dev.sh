@@ -29,7 +29,7 @@ echo "  Ctrl+b p  - Previous window"
 echo "  Ctrl+b d  - Detach (keep processes running)"
 
 tmux new-session -d -s $SESSION_NAME -n 'astro' -c "$PWD" \
-    "bash -c 'npx astro dev --port $PORT; read'"
+    "bash -c 'pnpm astro dev --port $PORT; read'"
 
 TUNNEL_CONFIG=$(mktemp /tmp/cloudflared-ourlens-XXXXXX.yml)
 cat > $TUNNEL_CONFIG << EOF
