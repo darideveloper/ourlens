@@ -12,6 +12,7 @@ interface ProcessingOverlayProps {
 
 export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
   const { state, progress } = useAnalysisStore();
+  const displayProgress = Math.round(progress);
 
   if (state === 'idle' || state === 'complete' || state === 'error') return null;
 
@@ -45,7 +46,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
               }
               style={{ width: `${progress}%` }}
               role="progressbar"
-              aria-valuenow={progress}
+              aria-valuenow={displayProgress}
               aria-valuemin={0}
               aria-valuemax={100}
               aria-label="Analysis progress"
@@ -53,7 +54,7 @@ export function ProcessingOverlay({ onCancel }: ProcessingOverlayProps) {
           </div>
 
           <p className="text-sm text-on-surface-muted tabular-nums">
-            {progress}% complete
+            {displayProgress}% complete
           </p>
         </div>
 
