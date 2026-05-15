@@ -39,7 +39,7 @@ The system SHALL provide a `submitFrames` function in `src/lib/api/analyze-frame
 - **AND** the dummy data SHALL include realistic `Hazard` objects with name, risk level, and recommendation
 
 ### Requirement: API Service Architecture
-All API calls SHALL use the native browser `fetch` API via a typed `safeFetch<T>()` wrapper with `AbortSignal.timeout()`, configurable base URL (via `PUBLIC_N8N_BASE_URL` environment variable), `FetchError` classification, and retry logic for transient errors (network, timeout, 5xx).
+All API calls SHALL use the native browser `fetch` API via a typed `safeFetch<T>()` wrapper with `AbortSignal.timeout()`, configurable base URL (via `PUBLIC_N8N_BASE_URL` environment variable), `FetchError` classification, and retry logic for transient errors (network, timeout, 5xx). The `PUBLIC_N8N_BASE_URL` variable SHALL be documented in `.env.example` so all developers know it is required for live operation.
 
 #### Scenario: API base URL configuration
 - **WHEN** the application initializes
@@ -53,6 +53,18 @@ All API calls SHALL use the native browser `fetch` API via a typed `safeFetch<T>
 
 #### Scenario: Runtime response validation
 - **WHEN** the n8n API returns an unexpected response shape
-- **THEN** `parseSafetyReport()` SHALL wrap the response in a safe default hazard entry
+- **THEN** `parseSafetyReport()` SHALL wrap the response in a safe default hazard entry: `{ name: "Analysis Complete", riskLevel: "Low", recommendation: "We couldn't parse the detailed results. Please try scanning again." }`
 - **AND** SHALL NOT crash the application
+
+#### Scenario: Environment variable documented
+- **WHEN** a developer clones the repository and reads `.env.example`
+- **THEN** `PUBLIC_N8N_BASE_URL` SHALL appear with a descriptive comment explaining its purpose and format
+
+### Requirement: Hazard Data Type
+The `riskLevel` field on `Hazard` SHALL accept only `"High"` or `"Low"`. The n8n system prompt and output parser SHALL enforce this constraint at the AI level. Any response where a hazard contains any other `riskLevel` value SHALL fail `isSafetyReport()` validation and be replaced by the safe default.
+
+#### Scenario: Invalid riskLevel rejected
+- **WHEN** n8n returns a hazard with `riskLevel` set to any value other than `"High"` or `"Low"` (e.g. `"Medium"`)
+- **THEN** `isSafetyReport()` SHALL return `false` for the entire report
+- **AND** `parseSafetyReport()` SHALL return the safe default hazard entry instead of crashing
 
