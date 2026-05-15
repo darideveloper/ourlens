@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { IconButton } from '@/components/atoms/IconButton';
 import { Spinner } from '@/components/atoms/Spinner';
 
@@ -6,6 +7,7 @@ interface CameraControlsProps {
   onRecord: () => void;
   isRecording: boolean;
   disabled: boolean;
+  recordDuration: number;
 }
 
 export function CameraControls({
@@ -13,7 +15,26 @@ export function CameraControls({
   onRecord,
   isRecording,
   disabled,
+  recordDuration,
 }: CameraControlsProps) {
+  const [secondsLeft, setSecondsLeft] = useState(recordDuration);
+
+  useEffect(() => {
+    if (!isRecording) {
+      setSecondsLeft(recordDuration);
+      return;
+    }
+    setSecondsLeft(recordDuration);
+    const id = setInterval(() => {
+      setSecondsLeft((s) => Math.max(0, s - 1));
+    }, 1_000);
+    return () => clearInterval(id);
+  }, [isRecording, recordDuration]);
+
+  const recordLabel = isRecording
+    ? `Recording… ${secondsLeft}s left`
+    : `Record ${recordDuration}-second video`;
+
   return (
     <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-8 px-4 z-10">
       <IconButton
@@ -41,7 +62,7 @@ export function CameraControls({
       <IconButton
         onClick={onRecord}
         disabled={disabled}
-        label={isRecording ? 'Recording' : 'Record 3-second video'}
+        label={recordLabel}
       >
         {isRecording ? (
           <div className="flex items-center justify-center p-1 rounded-full ring-2 ring-danger-500 animate-pulse-slow">

@@ -15,7 +15,7 @@ export function CameraScanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { stopStream } = useCamera(videoRef);
-  const { captureFrame, startRecording, isRecording, frames } = useFrameExtractor(
+  const { captureFrame, startRecording, isRecording, recordDuration, frames } = useFrameExtractor(
     videoRef,
     canvasRef,
   );
@@ -49,6 +49,7 @@ export function CameraScanner() {
           onRecord={startRecording}
           isRecording={isRecording}
           disabled={status !== 'ready'}
+          recordDuration={recordDuration}
         />
       ) : null}
 

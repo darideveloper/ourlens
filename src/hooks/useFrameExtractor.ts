@@ -2,8 +2,9 @@ import { useRef, useCallback, useState } from 'react';
 import { useCameraStore } from '@/stores/use-camera-store';
 import { processFrame } from '@/lib/camera';
 
-const RECORD_DURATION = 3_000;
-const FRAME_INTERVAL = 750;
+const _rawDuration = parseInt(import.meta.env.PUBLIC_RECORD_DURATION_SECONDS, 10);
+const RECORD_DURATION = (!isNaN(_rawDuration) && _rawDuration > 0 ? _rawDuration : 3) * 1_000;
+const FRAME_INTERVAL = 1_000;
 
 export function useFrameExtractor(
   videoRef: React.RefObject<HTMLVideoElement | null>,
@@ -74,6 +75,7 @@ export function useFrameExtractor(
   return {
     frames,
     isRecording,
+    recordDuration: RECORD_DURATION / 1_000,
     captureFrame: captureSingle,
     startRecording,
     stopRecording,
