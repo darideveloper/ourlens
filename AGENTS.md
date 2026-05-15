@@ -13,13 +13,6 @@ Use `@/openspec/AGENTS.md` to learn:
 - Spec format and conventions
 - Project structure and guidelines
 
-**CRITICAL — Task marking override:**
-When implementing tasks from any OpenSpec proposal, you MUST load and follow the
-`apply-spec-proposal-iteratively` skill. Mark each task `- [x]` in `tasks.md`
-IMMEDIATELY after completing it, before moving to the next task. Never batch-mark
-all tasks at the end of implementation. The tasks.md file must reflect real-time
-progress at all times.
-
 Keep this managed block so 'openspec update' can refresh the instructions.
 
 <!-- OPENSPEC:END -->
