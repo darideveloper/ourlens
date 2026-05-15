@@ -40,14 +40,13 @@ export function CodeForm() {
         <input
           id="invite-code"
           type="text"
-          inputMode="numeric"
           autoComplete="off"
           spellCheck={false}
           value={inputValue}
           onChange={(e) => handleInputChange(e.target.value)}
           disabled={isValidating}
           className="h-tap w-full px-4 text-base text-on-surface bg-surface-alt border border-on-surface-muted/30 rounded-accessible focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent contrast-more:border-on-surface disabled:opacity-50"
-          placeholder="e.g. 4821…"
+          placeholder="Your code…"
           aria-describedby={error ? 'code-error' : undefined}
         />
       </div>

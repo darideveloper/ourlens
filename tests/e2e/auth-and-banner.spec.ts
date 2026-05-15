@@ -50,7 +50,7 @@ test.describe('Task 2.5 - Authenticated user accesses protected content', () => 
 
     await page.goto('/');
     await page.waitForSelector('#invite-code');
-    await page.fill('#invite-code', '1234');
+    await page.fill('#invite-code', 'OURLENS');
     await page.click('button[type="submit"]');
 
     await expect(page).toHaveURL('/instructions', { timeout: 10_000 });
