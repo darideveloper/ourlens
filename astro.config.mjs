@@ -11,7 +11,7 @@ export default defineConfig({
   integrations: [
     react(),
     vitePwa({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Ourlens',
         short_name: 'Ourlens',

@@ -67,9 +67,7 @@ The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin 
 
 ### Requirement: Service Worker via @vite-pwa/astro
 
-The application SHALL use `@vite-pwa/astro` with Workbox for service worker management, cache-first strategy for app shell assets, and network-first strategy with 10s timeout for API calls. The precache manifest SHALL include all HTML pages to enable offline navigation fallback.
-
-**Modification Reason:** The current `globPatterns` excludes `.html` files, causing the offline fallback page to not be precached. This breaks the `navigateFallback` functionality. Adding `.html` to globPatterns ensures all pages (including `/offline/`) are available offline.
+The application SHALL use `@vite-pwa/astro` with Workbox for service worker management, cache-first strategy for app shell assets, and network-first strategy with 10s timeout for API calls. The precache manifest SHALL include all HTML pages to enable offline navigation fallback. The service worker SHALL use `registerType: 'autoUpdate'` so that a new service worker activates automatically on the next page navigation after a new deployment, without requiring user interaction.
 
 #### Scenario: App accessed on slow network
 - **WHEN** user opens the PWA on a device with weak connectivity
@@ -82,25 +80,22 @@ The application SHALL use `@vite-pwa/astro` with Workbox for service worker mana
 - **AND** the service worker precache manifest SHALL include all HTML pages (via globPatterns including `.html`)
 - **AND** SHALL navigate to an offline fallback page for unknown routes via the precached `/offline/index.html`
 
+#### Scenario: New deployment is available
+- **WHEN** a new version of the app has been deployed and the user opens or navigates within the PWA
+- **THEN** the service worker SHALL detect the new version and activate it automatically
+- **AND** the updated assets SHALL be served on the next page load without user interaction
+- **AND** no manual update prompt SHALL be shown
+- **AND** the Vite-hashed asset filenames referenced in the served HTML SHALL match the files available on the server (preventing CSS/JS 404s caused by stale HTML referencing old asset hashes)
+
 ### Requirement: iOS PWA Meta Tags
-The application SHALL include `<meta name="apple-mobile-web-app-capable" content="yes">`, `apple-mobile-web-app-status-bar-style` set to `black-translucent`, `apple-mobile-web-app-title`, and `apple-touch-icon` link in the document head. The `theme-color` meta tag SHALL use the brand-500 color (`#dd4d57`) matching the PWA manifest. A `<meta name="description">` tag with the app description SHALL be included for SEO and PWA install prompts.
+
+The application SHALL include `<meta name="mobile-web-app-capable" content="yes">` (the cross-platform standard tag), `apple-mobile-web-app-status-bar-style` set to `black-translucent`, `apple-mobile-web-app-title`, and `apple-touch-icon` link in the document head. The `theme-color` meta tag SHALL use the brand-500 color (`#dd4d57`) matching the PWA manifest. A `<meta name="description">` tag with the app description SHALL be included for SEO and PWA install prompts. The deprecated `apple-mobile-web-app-capable` tag SHALL NOT be used.
 
 #### Scenario: PWA meta tags present
 - **WHEN** the Layout component renders
-- **THEN** the HTML head SHALL include `apple-mobile-web-app-capable` meta tag with content `yes`
+- **THEN** the HTML head SHALL include `mobile-web-app-capable` meta tag with content `yes` (NOT the deprecated `apple-mobile-web-app-capable`)
 - **AND** SHALL include `apple-mobile-web-app-status-bar-style` set to `black-translucent` (semi-transparent status bar over brand content)
 - **AND** SHALL include an `apple-touch-icon` link (180x180 minimum)
 - **AND** SHALL include `theme-color` meta tag with the brand-500 color value `#dd4d57`
 - **AND** SHALL include `description` meta tag with content "AI-powered home safety scanner"
-
-### Requirement: PWA Update Prompt
-The system SHALL detect when a new service worker version is available and display a PWA update prompt with a "Update Now" button, using `useRegisterSW` from `virtual:pwa-register/react`, with `registerType: 'prompt'` so the user controls when to update. The prompt SHALL use glass-morphism styling (`backdrop-blur-md bg-surface/80`) and animate in from the bottom.
-
-#### Scenario: PWA update available
-- **WHEN** a new version of the service worker is detected
-- **THEN** the system SHALL display a PWA update prompt with "Update Now" button
-- **AND** SHALL NOT auto-reload the page (user controls when to update via `registerType: 'prompt'`)
-- **AND** the prompt SHALL have `role="alertdialog"` and minimum 44px tap target
-- **AND** the prompt SHALL use glass-morphism styling with `backdrop-blur-md`
-- **AND** the prompt SHALL animate in from the bottom with a `slide-up` effect
 

@@ -3,7 +3,6 @@ import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 import OfflineIndicator from '@/components/atoms/OfflineIndicator.tsx';
 import IosInstallBanner from '@/components/atoms/IosInstallBanner.tsx';
-import PWAUpdatePrompt from '@/components/atoms/PWAUpdatePrompt.tsx';
 
 const title = 'Ourlens - Home Safety Scanner';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -31,7 +30,7 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
     <!-- theme-color must stay in sync with: astro.config.mjs manifest AND --color-brand-500 in global.css -->
     <meta name="theme-color" content="#dd4d57" />
     <meta name="description" content="AI-powered home safety scanner" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Ourlens" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -49,7 +48,6 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
       Skip to content
     </a>
     <OfflineIndicator client:only="react" />
-    <PWAUpdatePrompt client:only="react" />
     <IosInstallBanner client:only="react" />
 
     {showNav && (
