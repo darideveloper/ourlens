@@ -1,5 +1,6 @@
 import { useHydratedScanStore } from '@/stores/use-scan-store';
 import { useAnalysisStore } from '@/stores/use-analysis-store';
+import { useCameraStore } from '@/stores/use-camera-store';
 import { SafetyReport, EmptyReport } from './SafetyReport';
 import { navigate } from 'astro:transitions/client';
 
@@ -27,10 +28,11 @@ export function ReportPage() {
   const clearCurrentScan = hydrated.clearCurrentScan;
   const analysisState = useAnalysisStore((s) => s.state);
 
-  const handleScanAgain = () => {
+  const handleScanAgain = async () => {
+    useCameraStore.getState().reset();
+    await navigate('/scanner');
     clearCurrentScan();
     useAnalysisStore.getState().reset();
-    navigate('/scanner');
   };
 
   if (analysisState !== 'idle' && analysisState !== 'complete') {
