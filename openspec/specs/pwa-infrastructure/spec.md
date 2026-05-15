@@ -33,7 +33,7 @@ The application SHALL display a "You are offline" banner when the browser report
 - **THEN** the offline status banner SHALL NOT be displayed
 
 ### Requirement: PWA Manifest Configuration
-The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin with `display: standalone`, `orientation: portrait`, app name, icon URLs (192px, 512px, maskable variants), and `start_url` with PWA source tracking. The `theme_color` SHALL be set to `#fffffe` (matching the surface background) and `background_color` SHALL be set to `#fffffe`.
+The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin with `display: standalone`, `orientation: portrait`, app name, icon URLs (192px, 512px, maskable variants), and `start_url` with PWA source tracking. The `theme_color` SHALL be set to the brand-500 color (`#dd4d57`, converted from `oklch(0.62 0.18 20)`) to match the Ourlens brand identity. The `background_color` SHALL be set to `#fffffe` (matching the surface background). All PWA icon PNGs SHALL be generated from the canonical Ourlens logo (`/ourlens-logo.png`) using `@vite-pwa/assets-generator` with a configuration file (`vite-pwa-assets-generator.config.ts`) to ensure a single source of truth and reproducible output.
 
 #### Scenario: User installs the PWA
 - **WHEN** user adds the app to their home screen
@@ -41,7 +41,20 @@ The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin 
 - **AND** SHALL be locked to portrait orientation
 - **AND** SHALL display the app icon on the home screen
 - **AND** SHALL provide maskable icon variants for adaptive icon support
-- **AND** the splash screen and status bar SHALL use the `#fffffe` theme color
+- **AND** the splash screen and status bar SHALL use the brand-500 theme color (coral `#dd4d57`)
+
+#### Scenario: Brand consistency of PWA icons
+- **WHEN** PWA icons are displayed (home screen, splash, browser)
+- **THEN** all icons SHALL visually match the Ourlens logo (full logo with solid background)
+- **AND** icons SHALL be generated from `/ourlens-logo.png` via `@vite-pwa/assets-generator`
+- **AND** the generation SHALL be configurable via `vite-pwa-assets-generator.config.ts`
+- **AND** the generation script SHALL be reproducible via `npm run generate-pwa-assets`
+
+#### Scenario: Theme color rebrand synchronization
+- **WHEN** the brand-500 color is changed in `src/styles/global.css`
+- **THEN** the `theme_color` in `astro.config.mjs` manifest SHALL also be updated to match
+- **AND** the `<meta name="theme-color">` in `Layout.astro` SHALL also be updated to match
+- **AND** code comments in both files SHALL reference this synchronization requirement
 
 ### Requirement: Service Worker via @vite-pwa/astro
 The application SHALL use `@vite-pwa/astro` with Workbox for service worker management, cache-first strategy for app shell assets, and network-first strategy with 10s timeout for API calls.
@@ -57,14 +70,15 @@ The application SHALL use `@vite-pwa/astro` with Workbox for service worker mana
 - **AND** SHALL navigate to an offline fallback page for unknown routes
 
 ### Requirement: iOS PWA Meta Tags
-The application SHALL include `<meta name="apple-mobile-web-app-capable" content="yes">`, `apple-mobile-web-app-status-bar-style` set to `default`, `apple-mobile-web-app-title`, and `apple-touch-icon` link in the document head.
+The application SHALL include `<meta name="apple-mobile-web-app-capable" content="yes">`, `apple-mobile-web-app-status-bar-style` set to `black-translucent`, `apple-mobile-web-app-title`, and `apple-touch-icon` link in the document head. The `theme-color` meta tag SHALL use the brand-500 color (`#dd4d57`) matching the PWA manifest. A `<meta name="description">` tag with the app description SHALL be included for SEO and PWA install prompts.
 
 #### Scenario: PWA meta tags present
 - **WHEN** the Layout component renders
 - **THEN** the HTML head SHALL include `apple-mobile-web-app-capable` meta tag with content `yes`
-- **AND** SHALL include `apple-mobile-web-app-status-bar-style` set to `default` (keeps status bar visible for elderly users)
+- **AND** SHALL include `apple-mobile-web-app-status-bar-style` set to `black-translucent` (semi-transparent status bar over brand content)
 - **AND** SHALL include an `apple-touch-icon` link (180x180 minimum)
-- **AND** SHALL include `theme-color` meta tag
+- **AND** SHALL include `theme-color` meta tag with the brand-500 color value `#dd4d57`
+- **AND** SHALL include `description` meta tag with content "AI-powered home safety scanner"
 
 ### Requirement: PWA Update Prompt
 The system SHALL detect when a new service worker version is available and display a PWA update prompt with a "Update Now" button, using `useRegisterSW` from `virtual:pwa-register/react`, with `registerType: 'prompt'` so the user controls when to update. The prompt SHALL use glass-morphism styling (`backdrop-blur-md bg-surface/80`) and animate in from the bottom.

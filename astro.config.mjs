@@ -1,4 +1,7 @@
 // @ts-check
+// theme_color must stay in sync with:
+// - --color-brand-500 in src/styles/global.css
+// - <meta name="theme-color"> in src/layouts/Layout.astro
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
@@ -13,7 +16,7 @@ export default defineConfig({
         name: 'Ourlens',
         short_name: 'Ourlens',
         description: 'AI-powered home safety scanner',
-        theme_color: '#fffffe',
+        theme_color: '#dd4d57',
         background_color: '#fffffe',
         display: 'standalone',
         orientation: 'portrait',

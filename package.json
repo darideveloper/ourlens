@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "generate-pwa-assets": "pwa-assets-generator --config vite-pwa-assets-generator.config.ts"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "playwright": "^1.60.0"
   }
 }
