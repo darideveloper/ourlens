@@ -57,7 +57,7 @@ The application SHALL configure a Web App Manifest via `@vite-pwa/astro` plugin 
 - **THEN** all icons SHALL visually match the Ourlens logo (full logo with solid background)
 - **AND** icons SHALL be generated from `/ourlens-logo.png` via `@vite-pwa/assets-generator`
 - **AND** the generation SHALL be configurable via `vite-pwa-assets-generator.config.ts`
-- **AND** the generation script SHALL be reproducible via `npm run generate-pwa-assets`
+- **AND** the generation script SHALL be reproducible via `pnpm generate-pwa-assets`
 
 #### Scenario: Theme color rebrand synchronization
 - **WHEN** the brand-500 color is changed in `src/styles/global.css`
