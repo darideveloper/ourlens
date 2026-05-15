@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCamera } from '@/hooks/useCamera';
 import { useFrameExtractor } from '@/hooks/useFrameExtractor';
 import { useAnalysis } from '@/hooks/useAnalysis';
@@ -32,6 +32,17 @@ export function CameraScanner() {
   };
 
   const isAnalyzing = analysisState !== 'idle' && analysisState !== 'complete';
+
+  const [secondsLeft, setSecondsLeft] = useState(recordDuration);
+  useEffect(() => {
+    if (!isRecording) {
+      setSecondsLeft(recordDuration);
+      return;
+    }
+    setSecondsLeft(recordDuration);
+    const id = setInterval(() => setSecondsLeft((s) => Math.max(0, s - 1)), 1_000);
+    return () => clearInterval(id);
+  }, [isRecording, recordDuration]);
 
   return (
     <div className="relative flex flex-col flex-1 min-h-0 bg-surface-alt">
@@ -73,7 +84,7 @@ export function CameraScanner() {
       {status === 'recording' && (
         <div className="absolute top-16 left-0 right-0 flex justify-center z-10 pointer-events-none">
           <div className="bg-danger-500 text-white text-lg font-semibold px-4 py-2 rounded-accessible animate-pulse-slow" aria-hidden="true">
-            Recording
+            Recording… {secondsLeft}s left
           </div>
         </div>
       )}
