@@ -35,6 +35,7 @@ export const useSessionStore = create<SessionState>()(
             }
           } catch (err) {
             set({
+              isValid: false,
               error: err instanceof Error ? err.message : 'Unknown error',
               isValidating: false,
             });

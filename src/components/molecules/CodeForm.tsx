@@ -1,15 +1,16 @@
 import { useState, type FormEvent } from 'react';
 import { navigate } from 'astro:transitions/client';
-import { useSessionStore } from '@/stores/use-session-store';
+import { useHydratedSessionStore, useSessionStore } from '@/stores/use-session-store';
 import { Spinner } from '@/components/atoms/Spinner';
 
 export function CodeForm() {
   const { code, isValidating, isValid, error, validateCodeAction } =
-    useSessionStore();
+    useHydratedSessionStore();
   const [inputValue, setInputValue] = useState(code || '');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isValidating) return;
     const trimmed = inputValue.trim();
     if (!trimmed) return;
     await validateCodeAction(trimmed);
