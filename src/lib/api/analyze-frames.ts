@@ -42,7 +42,11 @@ function isSafetyReport(data: unknown): data is SafetyReport {
 }
 
 function parseSafetyReport(data: unknown): SafetyReport {
-  if (isSafetyReport(data)) return data;
+  const payload =
+    typeof data === 'object' && data !== null && 'output' in data
+      ? (data as Record<string, unknown>).output
+      : data;
+  if (isSafetyReport(payload)) return payload;
   return {
     hazards: [
       {
@@ -68,7 +72,7 @@ export async function submitFrames(
   }
 
   const data = await safeFetch<unknown>(
-    `${import.meta.env.PUBLIC_N8N_BASE_URL}/webhook/analyze-frames`,
+    `${import.meta.env.PUBLIC_N8N_BASE_URL}/analyze`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -45,9 +45,9 @@ export function useAnalysis() {
     progressRef.current = setInterval(() => {
       const current = useAnalysisStore.getState();
       if (current.state === 'uploading' && current.progress < 15) {
-        setProgress(Math.min(current.progress + 5, 15));
+        setProgress(Math.min(current.progress + 1, 15));
       } else if (current.state === 'analyzing' && current.progress < 90) {
-        setProgress(Math.min(current.progress + 3, 90));
+        setProgress(Math.min(current.progress + 1.5, 90));
       }
     }, 150);
 

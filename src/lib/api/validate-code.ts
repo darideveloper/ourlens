@@ -9,7 +9,7 @@ export async function validateCode(code: string): Promise<ValidateCodeResponse> 
     return { valid: code.length >= 4 };
   }
   return safeFetch<ValidateCodeResponse>(
-    `${import.meta.env.PUBLIC_N8N_BASE_URL}/webhook/validate-code`,
+    `${import.meta.env.PUBLIC_N8N_BASE_URL}/validate`,
     { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) },
     30_000,
   );

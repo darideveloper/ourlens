@@ -47,3 +47,6 @@ scripts/
 
 # local TLS certificates
 .certs/
+
+# claude files
+CLAUDE.md
