@@ -52,7 +52,7 @@ The system SHALL provide an Access Control screen where users enter an invitatio
 - **AND** the "Verify Code" button SHALL remain disabled during validation
 
 ### Requirement: Access Control UI
-The Access Control screen SHALL display the Ourlens logo above the branded heading, a single text input for the invitation code with `spellcheck="false"` and placeholder ending with an ellipsis character, and a submit button with gradient background and large tap targets (minimum 44px / `min-h-tap min-w-tap`). The screen background SHALL use a subtle gradient from `brand-50` to `surface` for visual depth. The form card SHALL animate in with a `scale-in` effect on initial render.
+The Access Control screen SHALL display the Ourlens logo above the branded heading, a single text input for the invitation code with `spellcheck="false"` and placeholder ending with an ellipsis character, and a submit button with gradient background and large tap targets (minimum 44px / `min-h-tap min-w-tap`). The invitation code input SHALL NOT set `inputMode` so the device default full keyboard is presented, allowing any character to be entered. The screen background SHALL use a subtle gradient from `brand-50` to `surface` for visual depth. The form card SHALL animate in with a `scale-in` effect on initial render.
 
 #### Scenario: Access Control screen rendered
 - **WHEN** the application loads the Access Control screen at `/`
@@ -61,11 +61,17 @@ The Access Control screen SHALL display the Ourlens logo above the branded headi
 - **AND** all interactive elements SHALL meet minimum 44px tap target size
 - **AND** the input field SHALL have a visible focus indicator (`focus-visible:ring-4`) and `spellcheck="false"`
 - **AND** the input placeholder SHALL end with an ellipsis character (`…`)
+- **AND** the input SHALL NOT restrict the device keyboard to numeric-only (no `inputMode="numeric"`)
 - **AND** the form card SHALL animate in with a `scale-in` effect
 
 #### Scenario: Branding update
 - **WHEN** a developer changes brand color tokens in `src/styles/global.css`
 - **THEN** the Access Control screen gradient, form, and button SHALL reflect the new colors
+
+#### Scenario: Alphanumeric invitation code entered
+- **WHEN** a user types an alphanumeric code (e.g., `OURLENS2024`) into the invitation code field
+- **THEN** all characters SHALL be accepted and displayed in the input
+- **AND** the device SHALL present a full keyboard (not a numeric-only keypad)
 
 ### Requirement: Hydration-Safe Session Access
 The Access Control screen SHALL use the `useHydratedSessionStore()` hook (or equivalent) to access the Zustand session store, ensuring that the component waits for localStorage hydration to complete before rendering with hydrated state values. During hydration, the component SHALL render with default state values (`code: ''`, `isValid: null`) rather than stale or inconsistent values.
