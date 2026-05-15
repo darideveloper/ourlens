@@ -22,7 +22,7 @@ export default function OfflineIndicator() {
   return (
     <div
       role="alert"
-      className="fixed top-0 left-0 right-0 z-50 bg-danger-700 text-white text-base text-center py-2 px-4 animate-slide-up"
+      className="fixed top-0 left-0 right-0 z-50 bg-danger-700 text-white text-base text-center py-2 px-4 animate-slide-down"
     >
       <div className="max-w-lg mx-auto flex items-center justify-center gap-2">
         <svg

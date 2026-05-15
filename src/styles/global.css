@@ -98,6 +98,7 @@
   --animate-flash: flash 300ms ease-out forwards;
   --animate-fade-in: fade-in 300ms ease-out forwards;
   --animate-slide-up: slide-up 300ms ease-out forwards;
+  --animate-slide-down: slide-down 300ms ease-out forwards;
   --animate-scale-in: scale-in 250ms ease-out forwards;
   --animate-stagger-fade: stagger-fade 400ms ease-out forwards;
   --animate-shimmer: shimmer 1.5s ease-in-out infinite;
@@ -119,6 +120,11 @@
 
   @keyframes slide-up {
     from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-100%); }
     to { opacity: 1; transform: translateY(0); }
   }
 

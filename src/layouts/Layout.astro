@@ -57,8 +57,9 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
         <div class="max-w-lg mx-auto flex items-center h-14 px-4 gap-3">
           <button
             type="button"
+            id="nav-back-btn"
             disabled={backDisabled}
-            onclick={backDisabled ? undefined : "history.back()"}
+            data-back-disabled={backDisabled ? 'true' : undefined}
             class={"min-h-tap min-w-tap flex items-center justify-center -ml-1 text-on-surface-muted " + (backDisabled ? 'opacity-30 cursor-default' : 'hover:text-on-surface') + " focus-visible:shadow-focus rounded-accessible transition-[color]"}
             aria-label="Go back"
           >
@@ -85,5 +86,10 @@ const apiOrigin = import.meta.env.PUBLIC_N8N_BASE_URL
     <main id="main-content" transition:animate class={showNav ? 'pt-14 relative flex-1 min-h-0 flex flex-col' : ''}>
       <slot />
     </main>
+    <script>
+      document.getElementById('nav-back-btn')?.addEventListener('click', () => {
+        history.back();
+      });
+    </script>
   </body>
 </html>

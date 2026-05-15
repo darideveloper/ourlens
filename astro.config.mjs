@@ -29,7 +29,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,woff2,png,svg,jpg,ico}'],
+        globPatterns: ['**/*.{js,css,woff2,png,svg,jpg,ico,html}'],
         runtimeCaching: [
           {
             urlPattern: /\/api\/.*/i,
