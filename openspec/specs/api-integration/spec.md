@@ -61,10 +61,15 @@ All API calls SHALL use the native browser `fetch` API via a typed `safeFetch<T>
 - **THEN** `PUBLIC_N8N_BASE_URL` SHALL appear with a descriptive comment explaining its purpose and format
 
 ### Requirement: Hazard Data Type
-The `riskLevel` field on `Hazard` SHALL accept only `"High"` or `"Low"`. The n8n system prompt and output parser SHALL enforce this constraint at the AI level. Any response where a hazard contains any other `riskLevel` value SHALL fail `isSafetyReport()` validation and be replaced by the safe default.
+The `riskLevel` field on `Hazard` SHALL accept `"High"`, `"Medium"`, or `"Low"`. Any response where a hazard contains any other `riskLevel` value SHALL fail `isSafetyReport()` validation and be replaced by the safe default.
+
+#### Scenario: Medium riskLevel accepted
+- **WHEN** n8n returns a hazard with `riskLevel` set to `"Medium"`
+- **THEN** `isSafetyReport()` SHALL return `true`
+- **AND** `parseSafetyReport()` SHALL include the hazard in the report
 
 #### Scenario: Invalid riskLevel rejected
-- **WHEN** n8n returns a hazard with `riskLevel` set to any value other than `"High"` or `"Low"` (e.g. `"Medium"`)
+- **WHEN** n8n returns a hazard with `riskLevel` set to any value other than `"High"`, `"Medium"`, or `"Low"`
 - **THEN** `isSafetyReport()` SHALL return `false` for the entire report
 - **AND** `parseSafetyReport()` SHALL return the safe default hazard entry instead of crashing
 

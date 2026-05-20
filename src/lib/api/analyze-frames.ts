@@ -21,6 +21,11 @@ const DUMMY_HAZARDS: SafetyReport = {
       recommendation: 'Clear pathway to ensure at least 36 inches of unobstructed passage.',
     },
     {
+      name: 'Exposed electrical cords',
+      riskLevel: 'Medium',
+      recommendation: 'Secure cords along baseboards or use cord covers to prevent trips.',
+    },
+    {
       name: 'Bathroom grab bars missing',
       riskLevel: 'Low',
       recommendation: 'Install grab bars near toilet and inside the shower/tub.',
@@ -36,6 +41,7 @@ function isSafetyReport(data: unknown): data is SafetyReport {
     (h) =>
       typeof (h as Record<string, unknown>).name === 'string' &&
       ((h as Record<string, unknown>).riskLevel === 'Low' ||
+        (h as Record<string, unknown>).riskLevel === 'Medium' ||
         (h as Record<string, unknown>).riskLevel === 'High') &&
       typeof (h as Record<string, unknown>).recommendation === 'string',
   );

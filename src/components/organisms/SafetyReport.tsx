@@ -8,6 +8,7 @@ interface SafetyReportProps {
 
 export function SafetyReport({ hazards, onScanAgain }: SafetyReportProps) {
   const highCount = hazards.filter((h) => h.riskLevel === 'High').length;
+  const mediumCount = hazards.filter((h) => h.riskLevel === 'Medium').length;
   const lowCount = hazards.filter((h) => h.riskLevel === 'Low').length;
 
   return (
@@ -31,6 +32,14 @@ export function SafetyReport({ hazards, onScanAgain }: SafetyReportProps) {
           <div className="bg-danger-50 border border-danger-500/30 rounded-accessible p-4 text-center">
             <p className="text-lg font-semibold text-danger-600">
               <span className="tabular-nums">{highCount}</span> high {highCount === 1 ? 'risk' : 'risks'} need attention
+            </p>
+          </div>
+        )}
+
+        {mediumCount > 0 && (
+          <div className="bg-warning-50 border border-warning-500/30 rounded-accessible p-4 text-center">
+            <p className="text-lg font-semibold text-warning-700">
+              <span className="tabular-nums">{mediumCount}</span> medium {mediumCount === 1 ? 'risk' : 'risks'} — evaluate
             </p>
           </div>
         )}

@@ -66,9 +66,10 @@ test.describe('Task 4.13 - Full Analysis Flow', () => {
     await expect(reportHeading).toBeVisible({ timeout: 5000 });
 
     const highRiskBanner = page.locator('text=/high risk/i');
-    const hazardCards = page.locator('text=/Loose rug|Poor lighting|Cluttered walk/');
+    const mediumRiskBanner = page.locator('text=/medium risk/i');
+    const hazardCards = page.locator('text=/Loose rug|Exposed electrical|Poor lighting|Cluttered walk/');
 
-    await expect(highRiskBanner.or(hazardCards)).toBeVisible({ timeout: 5000 });
+    await expect(highRiskBanner.or(mediumRiskBanner).or(hazardCards)).toBeVisible({ timeout: 5000 });
 
     const scanAgainBtn = page.locator('button:has-text("Scan Again")');
     await expect(scanAgainBtn).toBeVisible();

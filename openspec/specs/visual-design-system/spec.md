@@ -4,7 +4,7 @@
 TBD - created by archiving change update-visual-design-system. Update Purpose after archive.
 ## Requirements
 ### Requirement: Brand Color Palette
-All brand and semantic colors SHALL be defined as `@theme` tokens in `src/styles/global.css` using the OKLCH color space with full 50–900 scales. The primary brand color SHALL be derived from #fe676e (coral), the accent color from #febc26 (amber), and the info color from #a5c5d9 (sky). The surface/background SHALL be #fffffe. Danger tokens SHALL be derived from the coral brand color; safe/success tokens from the sky color blended with green; warning tokens from the amber accent color. All color tokens SHALL meet WCAG AAA contrast ratios against the surface background when used for text or interactive elements.
+All brand and semantic colors SHALL be defined as `@theme` tokens in `src/styles/global.css` using the OKLCH color space with full 50–900 scales. The primary brand color SHALL be derived from #fe676e (coral), the accent color from #febc26 (amber), and the info color from #a5c5d9 (sky). The surface/background SHALL be #fffffe. Danger tokens SHALL be derived from the coral brand color; safe/success tokens from the sky color blended with green; warning tokens from the amber accent color. All color tokens SHALL meet WCAG AAA contrast ratios against the surface background when used for text or interactive elements. The `warning` color tokens SHALL be used semantically to represent "Medium" risk hazards in the UI.
 
 #### Scenario: Color palette renders brand colors
 - **WHEN** any screen is rendered
@@ -13,6 +13,11 @@ All brand and semantic colors SHALL be defined as `@theme` tokens in `src/styles
 - **AND** `bg-info-500` SHALL render as sky (#a5c5d9 approximately)
 - **AND** `bg-surface` SHALL render as #fffffe
 - **AND** all text using `text-on-surface` or `text-on-surface-muted` SHALL meet WCAG AAA contrast ratios against `bg-surface`
+
+#### Scenario: Medium risk color mapping
+- **WHEN** a "Medium" risk hazard is rendered
+- **THEN** the system SHALL use `warning` color tokens for its background, borders, and badges
+- **AND** SHALL ensure WCAG AAA contrast for text on `warning-500` backgrounds
 
 #### Scenario: Color palette centralization
 - **WHEN** a developer changes `--color-brand-*`, `--color-accent-*`, or `--color-info-*` values in `src/styles/global.css`

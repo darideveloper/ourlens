@@ -1,4 +1,4 @@
-export type RiskLevel = 'Low' | 'High';
+export type RiskLevel = 'Low' | 'Medium' | 'High';
 
 export interface Hazard {
   name: string;
