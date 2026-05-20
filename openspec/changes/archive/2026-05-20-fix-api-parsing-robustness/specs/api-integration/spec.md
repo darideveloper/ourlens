@@ -1,24 +1,4 @@
-# api-integration Specification
-
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-2. Update Purpose after archive.
-## Requirements
-### Requirement: Invitation Code Validation API
-The system SHALL provide a `validateCode` function in `src/lib/api/validate-code.ts` that sends an invitation code to the n8n webhook endpoint via `safeFetch` POST and returns a typed `ValidateCodeResponse`. During development (when `PUBLIC_N8N_BASE_URL` is unset), the function SHALL return realistic dummy data.
-
-#### Scenario: Valid code sent to API
-- **WHEN** `validateCode` is called with a valid invitation code
-- **THEN** the system SHALL POST the code to the n8n webhook URL via `safeFetch`
-- **AND** SHALL return `{ valid: true }` on a successful response
-
-#### Scenario: Invalid code sent to API
-- **WHEN** `validateCode` is called with an invalid invitation code
-- **THEN** the system SHALL return `{ valid: false }` from the API response
-
-#### Scenario: Dummy data during development
-- **WHEN** `PUBLIC_N8N_BASE_URL` environment variable is not set
-- **THEN** `validateCode` SHALL return dummy data simulating an 800ms delay
-- **AND** SHALL return `{ valid: true }` for codes of 4+ characters
+## MODIFIED Requirements
 
 ### Requirement: Frame Submission API
 The system SHALL provide a `submitFrames` function in `src/lib/api/analyze-frames.ts` that sends an array of Base64-encoded JPEG frames along with the invitation code to the n8n webhook for AI analysis.
@@ -73,4 +53,3 @@ The `riskLevel` field on `Hazard` SHALL accept `"High"`, `"Medium"`, or `"Low"`.
 - **WHEN** n8n returns a hazard with `riskLevel` set to any value that cannot be normalized to `"High"`, `"Medium"`, or `"Low"`
 - **THEN** `isSafetyReport()` SHALL return `false` for the entire report
 - **AND** `parseSafetyReport()` SHALL return the safe default hazard entry instead of crashing
-

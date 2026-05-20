@@ -1,4 +1,4 @@
-import type { SafetyReport, AnalyzeFramesRequest } from './types';
+import type { SafetyReport, AnalyzeFramesRequest, RiskLevel, Hazard } from './types';
 import { safeFetch } from './client';
 
 const USE_DUMMY = !import.meta.env.PUBLIC_N8N_BASE_URL;
@@ -33,26 +33,51 @@ const DUMMY_HAZARDS: SafetyReport = {
   ],
 };
 
+function normalizeRiskLevel(level: unknown): RiskLevel | null {
+  if (typeof level !== 'string') return null;
+  const lower = level.toLowerCase();
+  if (lower === 'low') return 'Low';
+  if (lower === 'medium') return 'Medium';
+  if (lower === 'high') return 'High';
+  return null;
+}
+
 function isSafetyReport(data: unknown): data is SafetyReport {
   if (typeof data !== 'object' || data === null) return false;
   const obj = data as Record<string, unknown>;
   if (!Array.isArray(obj.hazards)) return false;
-  return obj.hazards.every(
-    (h) =>
-      typeof (h as Record<string, unknown>).name === 'string' &&
-      ((h as Record<string, unknown>).riskLevel === 'Low' ||
-        (h as Record<string, unknown>).riskLevel === 'Medium' ||
-        (h as Record<string, unknown>).riskLevel === 'High') &&
-      typeof (h as Record<string, unknown>).recommendation === 'string',
-  );
+
+  // We mutate the objects during validation to normalize the risk level
+  // This is safe because this is called on a fresh response object
+  return obj.hazards.every((h) => {
+    if (typeof h !== 'object' || h === null) return false;
+    const hazard = h as Record<string, unknown>;
+
+    const normalized = normalizeRiskLevel(hazard.riskLevel);
+    if (!normalized) return false;
+
+    hazard.riskLevel = normalized; // Normalize in-place
+
+    return (
+      typeof hazard.name === 'string' &&
+      typeof hazard.recommendation === 'string'
+    );
+  });
 }
 
 function parseSafetyReport(data: unknown): SafetyReport {
-  const payload =
-    typeof data === 'object' && data !== null && 'output' in data
-      ? (data as Record<string, unknown>).output
-      : data;
+  // Handle n8n array wrapping: [{ "output": { ... } }] or [{ ... }]
+  let payload = Array.isArray(data) ? data[0] : data;
+
+  // Handle nested output field: { "output": { ... } }
+  if (typeof payload === 'object' && payload !== null && 'output' in payload) {
+    payload = (payload as Record<string, unknown>).output;
+  }
+
   if (isSafetyReport(payload)) return payload;
+
+  console.warn('[API Parsing] Failed to parse safety report. Raw data:', data);
+
   return {
     hazards: [
       {
@@ -85,7 +110,7 @@ export async function submitFrames(
       body: JSON.stringify(payload),
       signal,
     },
-    45_000,
+    60_000,
   );
 
   return parseSafetyReport(data);
