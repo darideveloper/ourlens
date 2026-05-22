@@ -18,17 +18,17 @@ const DUMMY_HAZARDS: SafetyReport = {
     {
       name: 'Cluttered walkway',
       riskLevel: 'High',
-      recommendation: 'Clear pathway to ensure at least 36 inches of unobstructed passage.',
+      recommendation: 'Clear pathway to ensure at least 90 cm of unobstructed passage.',
     },
     {
-      name: 'Exposed electrical cords',
+      name: 'Exposed electrical cables',
       riskLevel: 'Medium',
-      recommendation: 'Secure cords along baseboards or use cord covers to prevent trips.',
+      recommendation: 'Secure cables along baseboards or use cable covers to prevent trips.',
     },
     {
       name: 'Bathroom grab bars missing',
       riskLevel: 'Low',
-      recommendation: 'Install grab bars near toilet and inside the shower/tub.',
+      recommendation: 'Install grab bars near toilet and inside the shower/bath.',
     },
   ],
 };

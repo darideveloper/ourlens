@@ -3,7 +3,7 @@ import { Spinner } from '@/components/atoms/Spinner';
 
 const STATUS_MESSAGES: Record<string, string> = {
   uploading: 'Uploading video…',
-  analyzing: 'Analyzing video…',
+  analyzing: 'Analysing video…',
 };
 
 interface ProcessingOverlayProps {

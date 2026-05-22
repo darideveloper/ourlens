@@ -1,47 +1,7 @@
-# camera-scanner Specification
-
-## Purpose
-TBD - created by archiving change add-ourlens-pwa-phase-3. Update Purpose after archive.
-## Requirements
-### Requirement: Camera Access and Live View
-The Camera Scanner SHALL access the device camera via `navigator.mediaDevices.getUserMedia` with `{ facingMode: { ideal: 'environment' } }` for the rear camera and render a live video preview as a React island component with `client:load` and `transition:persist`. The camera view SHALL include `touch-action: manipulation` on the video element to prevent double-tap zoom delay. A subtle gradient overlay SHALL appear at the bottom of the camera view to improve contrast for the controls. The layout hierarchy from `<body>` through `<main>` to the camera component SHALL use flex layout at every level (not percentage-based height) to ensure height propagation works through Astro's `display: contents` island wrappers. The `<main>` element, the AuthGuard wrapper, and the CameraScanner outer div SHALL all be `flex flex-col` containers. Inner status divs (loading, error) SHALL use `flex-1 min-h-0` instead of `h-full` to fill the flex container.
-
-#### Scenario: Camera permission granted
-- **WHEN** user navigates to the Scanner screen and grants camera permission
-- **THEN** the system SHALL display a live camera preview filling the viewport
-- **AND** SHALL show Capture (photo) and Record (3-second video) controls
-- **AND** SHALL start the rear-facing camera with `facingMode: { ideal: 'environment' }`
-- **AND** SHALL display a subtle gradient overlay at the bottom for control contrast
-
-#### Scenario: Camera permission denied
-- **WHEN** user denies camera permission
-- **THEN** the system SHALL display a user-friendly error message explaining how to enable camera access
-- **AND** SHALL provide a "Try Again" button
-- **AND** SHALL NOT crash or show a blank screen
-
-#### Scenario: Camera permission timeout
-- **WHEN** `getUserMedia` does not respond within 10 seconds
-- **THEN** the system SHALL display a "Camera did not respond" error message with a retry button
-- **AND** SHALL abort the camera request via `AbortSignal.timeout`
-
-#### Scenario: Overconstrained camera fallback
-- **WHEN** the requested rear camera constraints are not available on the device
-- **THEN** the system SHALL fall back to `{ video: true, audio: false }` and use any available camera
-
-#### Scenario: iOS Safari stream recovery
-- **WHEN** the app returns from the background on iOS Safari
-- **THEN** the system SHALL check if camera tracks are still `live` via `visibilitychange` event
-- **AND** SHALL restart the camera if tracks are dead
-
-#### Scenario: Camera preview fills available viewport height
-- **WHEN** the camera stream starts successfully on a page with the top navigation bar
-- **THEN** the `<main>` element SHALL be a flex column container allowing its children to stretch to fill the viewport
-- **AND** the AuthGuard wrapper SHALL be a flex column container (`flex-1 min-h-0 flex flex-col`) so height propagates through Astro's `display: contents` island wrappers
-- **AND** the CameraScanner outer div SHALL use `flex-1 min-h-0` (not `h-full`) to participate in the flex column
-- **AND** the `<video>` element SHALL have non-zero rendered dimensions (bounding box height > 0)
-- **AND** the live camera preview SHALL be visible and fill the available space
+## MODIFIED Requirements
 
 ### Requirement: Snapshot Frame Extraction
+
 The Camera Scanner SHALL implement live frame extraction from the camera stream: during a recording of configurable duration (controlled by the `PUBLIC_RECORD_DURATION_SECONDS` environment variable, default 3 seconds), extract exactly one frame per second using `canvas.drawImage(video)` and `requestAnimationFrame`, resize to 1024px width maintaining aspect ratio, compress to JPEG at 0.7 quality, and convert to Base64 strings. The total frame count equals the recording duration in seconds (e.g., 3 s → 3 frames, 10 s → 10 frames). Recording duration is baked in at build time via the `PUBLIC_RECORD_DURATION_SECONDS` public env var (accessible as `import.meta.env.PUBLIC_RECORD_DURATION_SECONDS`); if absent or invalid, the system SHALL fall back to 3 seconds. The user SHALL NOT see references to internal frame extraction; all user-facing labels SHALL present the flow as "record video → analyse video". After recording or capture completes and frames exist, the system SHALL show an "Analyse video" button with a gradient background (`bg-gradient-to-r from-brand-500 to-accent-500`) at the bottom of the screen (above the camera controls), only when the camera status is `ready`. The button SHALL NOT appear during active recording or capturing states. The "Recording" indicator SHALL use a glow-pulse animation (`animate-pulse-slow` with `ring-2 ring-danger-500`) and SHALL display a live countdown of remaining seconds in the format "Recording… Xs left" (e.g. "Recording… 2s left"), updating every second until recording stops. The Record button label SHALL dynamically reflect the configured duration (e.g., "Record 3-second video", "Record 10-second video").
 
 #### Scenario: User records a video with default duration
@@ -63,11 +23,6 @@ The Camera Scanner SHALL implement live frame extraction from the camera stream:
 - **AND** SHALL display a countdown from 10 to 0 in the format "Recording… Xs left" during recording
 - **AND** the Record button label SHALL read "Record 10-second video"
 
-#### Scenario: Invalid or missing env var
-- **WHEN** `PUBLIC_RECORD_DURATION_SECONDS` is absent, empty, or non-integer
-- **THEN** the system SHALL fall back to a 3-second recording duration
-- **AND** SHALL behave identically to the default-duration scenario
-
 #### Scenario: User captures a single photo
 - **WHEN** user taps the Capture button
 - **THEN** the system SHALL capture a single frame from the current camera view via `canvas.drawImage`
@@ -76,12 +31,8 @@ The Camera Scanner SHALL implement live frame extraction from the camera stream:
 - **AND** SHALL return an array containing 1 Base64-encoded JPEG string
 - **AND** SHALL display "Analyse video" button with gradient background after capture completes (camera status returns to `ready`)
 
-#### Scenario: No video or photo captured
-- **WHEN** user attempts to analyse without having recorded or captured anything
-- **THEN** the system SHALL display an error message: "No video captured. Please record a video or take a photo first."
-- **AND** SHALL NOT reference "frames" or "photos" in user-facing messages
-
 ### Requirement: Camera Stream Cleanup
+
 The system SHALL stop all camera tracks and release the media stream when the Camera Scanner component unmounts, when the app goes to the background, and when analysis begins (since the camera stream is no longer needed after frames are captured). The system SHALL restart the camera stream when the user returns from analysis (via "Scan Again" or cancel).
 
 #### Scenario: User navigates away from Scanner
@@ -101,4 +52,3 @@ The system SHALL stop all camera tracks and release the media stream when the Ca
 - **THEN** the system SHALL set the camera store status to `idle`
 - **AND** the `useCamera` hook SHALL re-acquire the camera stream automatically
 - **AND** the live camera preview SHALL be displayed again
-
