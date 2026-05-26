@@ -21,7 +21,7 @@ The system SHALL provide a `validateCode` function in `src/lib/api/validate-code
 - **AND** SHALL return `{ valid: true }` for codes of 4+ characters
 
 ### Requirement: Frame Submission API
-The system SHALL provide a `submitFrames` function in `src/lib/api/analyze-frames.ts` that sends an array of Base64-encoded JPEG frames along with the invitation code to the n8n webhook for AI analysis.
+The system SHALL provide a `submitFrames` function in `src/lib/api/analyze-frames.ts` that sends an array of Base64-encoded JPEG frames along with the invitation code to the n8n webhook for AI analysis. If the response indicates an invalid or expired invitation code via `[ { "valid": false } ]`, the function SHALL throw a dedicated `FetchError` of type `'http'` with status code `401` and message `"Session expired"` to enable downstream components to handle session expiration.
 
 #### Scenario: Frames submitted for analysis
 - **WHEN** `submitFrames` is called with a valid invitation code and an array of Base64 frames
@@ -37,6 +37,10 @@ The system SHALL provide a `submitFrames` function in `src/lib/api/analyze-frame
 - **WHEN** `PUBLIC_N8N_BASE_URL` environment variable is not set
 - **THEN** `submitFrames` SHALL return dummy hazard data simulating a 2000ms delay
 - **AND** the dummy data SHALL include realistic `Hazard` objects with name, risk level, and recommendation
+
+#### Scenario: Expired or invalid invitation code returned
+- **WHEN** the n8n webhook returns a response payload of `[ { "valid": false } ]` indicating the invitation code is expired or invalid
+- **THEN** the system SHALL throw a custom `FetchError` with type `'http'`, status `401`, and message `"Session expired"`
 
 ### Requirement: API Service Architecture
 All API calls SHALL use the native browser `fetch` API via a typed `safeFetch<T>()` wrapper with `AbortSignal.timeout()`, configurable base URL (via `PUBLIC_N8N_BASE_URL` environment variable), `FetchError` classification, and retry logic for transient errors (network, timeout, 5xx). The `PUBLIC_N8N_BASE_URL` variable SHALL be documented in `.env.example` so all developers know it is required for live operation.

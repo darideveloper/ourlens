@@ -4,6 +4,7 @@ import { useCameraStore } from '@/stores/use-camera-store';
 import { useScanStore } from '@/stores/use-scan-store';
 import { useSessionStore } from '@/stores/use-session-store';
 import { submitFrames } from '@/lib/api/analyze-frames';
+import { FetchError } from '@/lib/api';
 import { navigate } from 'astro:transitions/client';
 
 export function useAnalysis() {
@@ -65,6 +66,16 @@ export function useAnalysis() {
       clearProgress();
       if ((err as Error).name === 'AbortError' || (err as DOMException)?.name === 'AbortError') {
         reset();
+        return;
+      }
+      if (err instanceof FetchError && err.status === 401) {
+        reset();
+        window.alert('Session Expired: Your invitation code is invalid or has expired. Please verify your code again.');
+        useSessionStore.getState().reset();
+        useSessionStore.setState({ isValid: false });
+        useCameraStore.getState().reset();
+        useScanStore.getState().clearCurrentScan();
+        navigate('/', { history: 'replace' });
         return;
       }
       const message =

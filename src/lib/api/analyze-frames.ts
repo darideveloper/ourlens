@@ -1,5 +1,5 @@
 import type { SafetyReport, AnalyzeFramesRequest, RiskLevel, Hazard } from './types';
-import { safeFetch } from './client';
+import { safeFetch, FetchError } from './client';
 
 const USE_DUMMY = !import.meta.env.PUBLIC_N8N_BASE_URL;
 
@@ -68,6 +68,16 @@ function isSafetyReport(data: unknown): data is SafetyReport {
 function parseSafetyReport(data: unknown): SafetyReport {
   // Handle n8n array wrapping: [{ "output": { ... } }] or [{ ... }]
   let payload = Array.isArray(data) ? data[0] : data;
+
+  // Check if the response indicates an invalid or expired invitation code
+  if (
+    typeof payload === 'object' &&
+    payload !== null &&
+    'valid' in payload &&
+    payload.valid === false
+  ) {
+    throw new FetchError('http', 'Session expired', 401);
+  }
 
   // Handle nested output field: { "output": { ... } }
   if (typeof payload === 'object' && payload !== null && 'output' in payload) {
