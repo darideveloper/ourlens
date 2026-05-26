@@ -26,7 +26,7 @@ The system SHALL prevent unauthenticated access to protected routes (`/instructi
 - **AND** `AuthGuard` SHALL redirect the user to `/`
 
 ### Requirement: Invitation Code Validation
-The system SHALL provide an Access Control screen where users enter an invitation code and submit it for validation against the n8n backend via `safeFetch` POST request. On successful validation, the code SHALL be stored in the Zustand session store with persist middleware (`skipHydration: true`). When validation fails (either invalid code response or network error), the system SHALL explicitly set `isValid` to `false` to maintain consistent authentication state.
+The system SHALL provide an Access Control screen where users enter an invitation code and submit it for validation against the n8n backend via `safeFetch` POST request. On successful validation, the code SHALL be stored in the Zustand session store with persist middleware (`skipHydration: true`). When validation fails (either invalid code response or network error), the system SHALL explicitly set `isValid` to `false` to maintain consistent authentication state. When the backend returns an invalid code response, the system SHALL display the error message: "That invitation code is not recognised or expired. Please check and try again."
 
 #### Scenario: Valid invitation code submitted
 - **WHEN** user enters a valid invitation code and submits the form
@@ -36,7 +36,7 @@ The system SHALL provide an Access Control screen where users enter an invitatio
 
 #### Scenario: Invalid invitation code submitted
 - **WHEN** user enters an invalid invitation code and submits the form
-- **THEN** the system SHALL display an error message indicating the code is invalid
+- **THEN** the system SHALL display the error message: "That invitation code is not recognised or expired. Please check and try again."
 - **AND** the system SHALL set `isValid` to `false` in the session store
 - **AND** the user SHALL remain on the Access Control screen
 
