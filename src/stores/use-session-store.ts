@@ -7,8 +7,10 @@ interface SessionState {
   code: string;
   isValidating: boolean;
   isValid: boolean | null;
+  termsAccepted: boolean;
   error: string | null;
   validateCodeAction: (code: string) => Promise<void>;
+  setTermsAccepted: (accepted: boolean) => void;
   reset: () => void;
 }
 
@@ -19,6 +21,7 @@ export const useSessionStore = create<SessionState>()(
         code: '',
         isValidating: false,
         isValid: null,
+        termsAccepted: false,
         error: null,
         validateCodeAction: async (code: string) => {
           set({ isValidating: true, error: null, code });
@@ -41,13 +44,14 @@ export const useSessionStore = create<SessionState>()(
             });
           }
         },
+        setTermsAccepted: (accepted: boolean) => set({ termsAccepted: accepted }),
         reset: () =>
-          set({ code: '', isValidating: false, isValid: null, error: null }),
+          set({ code: '', isValidating: false, isValid: null, termsAccepted: false, error: null }),
       }),
       {
         name: 'ourlens-session',
         skipHydration: true,
-        partialize: (state) => ({ code: state.code, isValid: state.isValid }),
+        partialize: (state) => ({ code: state.code, isValid: state.isValid, termsAccepted: state.termsAccepted }),
         storage: createJSONStorage(() => localStorage),
       },
     ),
@@ -60,14 +64,22 @@ export function useHydratedSessionStore() {
   useEffect(() => {
     useSessionStore.persist.rehydrate();
     const unsub = useSessionStore.persist.onFinishHydration(() => {
-      if (useSessionStore.getState().isValid === null) {
+      const state = useSessionStore.getState();
+      if (state.isValid === null) {
         useSessionStore.setState({ isValid: false });
+      }
+      if (!state.termsAccepted) {
+        useSessionStore.setState({ termsAccepted: false });
       }
       setHydrated(true);
     });
     if (useSessionStore.persist.hasHydrated()) {
-      if (useSessionStore.getState().isValid === null) {
+      const state = useSessionStore.getState();
+      if (state.isValid === null) {
         useSessionStore.setState({ isValid: false });
+      }
+      if (!state.termsAccepted) {
+        useSessionStore.setState({ termsAccepted: false });
       }
       setHydrated(true);
     }
