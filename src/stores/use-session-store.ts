@@ -33,7 +33,7 @@ export const useSessionStore = create<SessionState>()(
               set({
                 isValid: false,
                 isValidating: false,
-                error: 'That invitation code is not recognised or expired. Please check and try again.',
+                error: 'That invitation code is not recognized or expired. Please check and try again.',
               });
             }
           } catch (err) {

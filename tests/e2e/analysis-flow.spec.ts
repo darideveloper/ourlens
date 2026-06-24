@@ -45,7 +45,7 @@ test.describe('Task 4.13 - Full Analysis Flow', () => {
 
     await page.waitForTimeout(500);
 
-    const analyzeBtn = page.locator('button:has-text("Analyse")');
+    const analyzeBtn = page.locator('button:has-text("Analyze")');
     const hasAnalyzeBtn = await analyzeBtn.isVisible({ timeout: 2000 }).catch(() => false);
 
     if (!hasAnalyzeBtn) {
@@ -111,7 +111,7 @@ test.describe('Task 4.13 - Full Analysis Flow', () => {
 
     await page.waitForTimeout(300);
 
-    const analyzeBtn = page.locator('button:has-text("Analyse")');
+    const analyzeBtn = page.locator('button:has-text("Analyze")');
     const hasAnalyzeBtn = await analyzeBtn.isVisible({ timeout: 2000 }).catch(() => false);
 
     if (!hasAnalyzeBtn) {
@@ -162,7 +162,7 @@ test.describe('Task 4.13 - Full Analysis Flow', () => {
 
     await page.waitForTimeout(300);
 
-    const analyzeBtn = page.locator('button:has-text("Analyse")');
+    const analyzeBtn = page.locator('button:has-text("Analyze")');
     const hasAnalyzeBtn = await analyzeBtn.isVisible({ timeout: 2000 }).catch(() => false);
 
     if (!hasAnalyzeBtn) {

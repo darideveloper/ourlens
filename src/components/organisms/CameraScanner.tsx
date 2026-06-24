@@ -71,7 +71,7 @@ export function CameraScanner() {
             onClick={() => { stopStream(); analyze(); }}
             className="min-h-tap min-w-tap w-full max-w-xs inline-flex items-center justify-center px-6 py-3 text-lg font-semibold bg-gradient-to-r from-brand-500 to-accent-500 text-white rounded-accessible hover:from-brand-600 hover:to-accent-600 active:from-brand-700 active:to-accent-700 focus-visible:shadow-focus contrast-more:ring-2 contrast-more:ring-offset-2 transition-[background] shadow-lg"
           >
-            Analyse video
+            Analyze video
           </button>
         </div>
       )}
