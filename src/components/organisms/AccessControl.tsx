@@ -15,7 +15,7 @@ export default function AccessControl() {
           Welcome to Ourlens
         </h1>
         <p className="text-lg text-on-surface-muted">
-          AI-powered home safety scanner for peace of mind.
+          AI-powered safety scanner for peace of mind.
         </p>
       </div>
       <CodeForm />
