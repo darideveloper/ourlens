@@ -14,14 +14,32 @@ async function attemptFetch<T>(
   options: RequestInit,
   timeoutMs: number,
 ): Promise<T> {
-  const signal = options.signal
-    ? AbortSignal.any([options.signal, AbortSignal.timeout(timeoutMs)])
-    : AbortSignal.timeout(timeoutMs);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('TimeoutError', 'TimeoutError')),
+    timeoutMs,
+  );
+
+  if (options.signal) {
+    if (options.signal.aborted) {
+      clearTimeout(timeoutId);
+      controller.abort(options.signal.reason);
+    } else {
+      options.signal.addEventListener('abort', () => {
+        clearTimeout(timeoutId);
+        controller.abort(options.signal!.reason);
+      }, { once: true });
+    }
+  }
+
+  const signal = controller.signal;
 
   let response: Response;
   try {
     response = await fetch(url, { ...options, signal });
+    clearTimeout(timeoutId);
   } catch (err) {
+    clearTimeout(timeoutId);
     if (err instanceof DOMException && err.name === 'TimeoutError') {
       throw new FetchError('timeout', 'Request timed out');
     }
